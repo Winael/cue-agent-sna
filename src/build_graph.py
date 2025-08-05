@@ -10,6 +10,7 @@ def build_graph(model):
     teams = org_data.get("teams", [])
     all_members = org_data.get("members", {})
     all_artifacts = org_data.get("artifacts", {})
+    all_rituals = org_data.get("rituals", {})
 
     # Add all members first to ensure they exist before adding manager edges
     for member_name, member_data in all_members.items():
@@ -18,6 +19,10 @@ def build_graph(model):
     # Add all artifacts first
     for artifact_name, artifact_data in all_artifacts.items():
         G.add_node(artifact_name, **artifact_data)
+
+    # Add all rituals first
+    for ritual_name, ritual_data in all_rituals.items():
+        G.add_node(ritual_name, **ritual_data)
 
     for team in teams:
         team_name = team.get("name")
@@ -54,6 +59,12 @@ def build_graph(model):
             if dependency in all_artifacts:
                 G.add_edge(artifact_name, dependency, relation="depends_on")
 
+    # Add ritual participants (directed edges from ritual to member)
+    for ritual_name, ritual_data in all_rituals.items():
+        for participant_name in ritual_data.get("participants", []):
+            if participant_name in all_members:
+                G.add_edge(ritual_name, participant_name, relation="participates_in")
+
     return G
 
 def draw_graph(G):
@@ -70,6 +81,8 @@ def draw_graph(G):
             node_colors.append('lightgreen')
         elif node_type == 'Artifact':
             node_colors.append('lightcoral')
+        elif node_type == 'Ritual':
+            node_colors.append('lightsalmon')
         else:
             node_colors.append('lightgray')
 

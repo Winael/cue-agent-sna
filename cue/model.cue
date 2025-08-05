@@ -28,6 +28,13 @@
     dependsOn: [...string] // Names of other artifacts this one depends on
 }
 
+#Ritual: {
+    name: string
+    type: "Daily Scrum" | "Sprint Planning" | "Sprint Review" | "Sprint Retrospective" | "PI Planning" | "Scrum of Scrums"
+    frequency: "daily" | "weekly" | "bi-weekly" | "monthly" | "quarterly"
+    participants: [...string] // Names of members participating in this ritual
+}
+
 #Team: {
     name:    string
     train:   #SAFeTrain
@@ -73,6 +80,14 @@ myOrg: {
         PaymentService: #Artifact & {name: "PaymentService", type: "service", dependsOn: ["UserService"]}
         WebApp: #Artifact & {name: "WebApp", type: "application", dependsOn: ["OrderService", "PaymentService"]}
         SharedLibrary: #Artifact & {name: "SharedLibrary", type: "library", dependsOn: []}
+    }
+
+    rituals: [name=string]: #Ritual // New section for all rituals
+    rituals: {
+        PhoenixDaily: #Ritual & {name: "Phoenix Daily", type: "Daily Scrum", frequency: "daily", participants: ["Alice", "Bob", "Charlie"]}
+        TitanDaily: #Ritual & {name: "Titan Daily", type: "Daily Scrum", frequency: "daily", participants: ["David", "Eve", "Frank"]}
+        ART_Sync: #Ritual & {name: "ART Sync", type: "Scrum of Scrums", frequency: "weekly", participants: ["Alice", "David", "Bob"]}
+        PI_Planning_Q3: #Ritual & {name: "PI Planning Q3", type: "PI Planning", frequency: "quarterly", participants: ["Alice", "Bob", "Charlie", "David", "Eve", "Frank"]}
     }
 
     teams: [
