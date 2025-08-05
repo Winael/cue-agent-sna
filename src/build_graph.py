@@ -11,6 +11,7 @@ def build_graph(model):
     all_members = org_data.get("members", {})
     all_artifacts = org_data.get("artifacts", {})
     all_rituals = org_data.get("rituals", {})
+    all_okrs = org_data.get("okrs", {})
 
     # Add all members first to ensure they exist before adding manager edges
     for member_name, member_data in all_members.items():
@@ -24,12 +25,17 @@ def build_graph(model):
     for ritual_name, ritual_data in all_rituals.items():
         G.add_node(ritual_name, **ritual_data)
 
+    # Add all OKRs first
+    for okr_name, okr_data in all_okrs.items():
+        G.add_node(okr_name, type="OKR", **okr_data)
+
     for team in teams:
         team_name = team.get("name")
         G.add_node(team_name, type="Team")
 
         member_names_in_team = team.get("memberNames", [])
         artifact_names_in_team = team.get("artifactNames", [])
+        okr_names_in_team = team.get("okrNames", [])
 
         # Add edges between team and its members
         for member_name in member_names_in_team:
@@ -38,6 +44,11 @@ def build_graph(model):
         # Add edges between team and its artifacts
         for artifact_name in artifact_names_in_team:
             G.add_edge(team_name, artifact_name, relation="owns")
+
+        # Add edges between team and its OKRs
+        for okr_name in okr_names_in_team:
+            if okr_name in all_okrs:
+                G.add_edge(team_name, okr_name, relation="owns_okr")
 
         # Add edges between all members of the team (undirected for collaboration)
         for i in range(len(member_names_in_team)):
@@ -65,6 +76,31 @@ def build_graph(model):
             if participant_name in all_members:
                 G.add_edge(ritual_name, participant_name, relation="participates_in")
 
+    # Add OKR ownership relationships (directed edges from owner to OKR)
+    for okr_name, okr_data in all_okrs.items():
+        owner_name = okr_data.get("owner")
+        # Check if owner is a Team, SAFeTrain, or Portfolio
+        if owner_name:
+            # Find the actual owner object (Team, SAFeTrain, Portfolio)
+            owner_node = None
+            for team in teams:
+                if team.get("name") == owner_name:
+                    owner_node = team.get("name")
+                    break
+            if not owner_node:
+                for train in org_data.get("trains", []):
+                    if train.get("name") == owner_name:
+                        owner_node = train.get("name")
+                        break
+            if not owner_node:
+                for portfolio in org_data.get("portfolios", []):
+                    if portfolio.get("name") == owner_name:
+                        owner_node = portfolio.get("name")
+                        break
+            
+            if owner_node and G.has_node(owner_node):
+                G.add_edge(owner_node, okr_name, relation="owns_okr")
+
     return G
 
 def draw_graph(G):
@@ -83,6 +119,8 @@ def draw_graph(G):
             node_colors.append('lightcoral')
         elif node_type == 'Ritual':
             node_colors.append('lightsalmon')
+        elif node_type == 'OKR':
+            node_colors.append('gold')
         else:
             node_colors.append('lightgray')
 

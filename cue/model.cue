@@ -3,14 +3,22 @@
     name: string
 }
 
+#OKR: {
+    objective: string
+    keyResults: [...string]
+    owner: string // Name of the entity (Member, Team, SAFeTrain, Portfolio) that owns this OKR
+}
+
 #Portfolio: {
     name:       string
     valueChain: #ValueChain
+    okrNames: [...string] // New field for OKRs associated with the Portfolio
 }
 
 #SAFeTrain: {
     name:      string
     portfolio: #Portfolio
+    okrNames: [...string] // New field for OKRs associated with the SAFe Train
 }
 
 #Member: {
@@ -40,6 +48,7 @@
     train:   #SAFeTrain
     memberNames: [...string] // Changed from 'members'
     artifactNames: [...string] // New field for artifacts owned by the team
+    okrNames: [...string] // New field for OKRs associated with the Team
 }
 
 myOrg: {
@@ -53,6 +62,7 @@ myOrg: {
         #Portfolio & {
             name:       "Digital Transformation"
             valueChain: myOrg.valueChains[0]
+            okrNames: ["Portfolio_OKR_1"]
         },
     ]
 
@@ -60,6 +70,7 @@ myOrg: {
         #SAFeTrain & {
             name:      "Agile Release Train 1"
             portfolio: myOrg.portfolios[0]
+            okrNames: ["ART_OKR_1"]
         },
     ]
 
@@ -90,18 +101,56 @@ myOrg: {
         PI_Planning_Q3: #Ritual & {name: "PI Planning Q3", type: "PI Planning", frequency: "quarterly", participants: ["Alice", "Bob", "Charlie", "David", "Eve", "Frank"]}
     }
 
+    okrs: [name=string]: #OKR // New section for all OKRs
+    okrs: {
+        Portfolio_OKR_1: #OKR & {
+            objective: "Increase customer satisfaction for Digital Transformation portfolio"
+            keyResults: [
+                "Achieve 90% CSAT score for key products",
+                "Reduce customer support tickets by 20%"
+            ]
+            owner: "Digital Transformation"
+        }
+        ART_OKR_1: #OKR & {
+            objective: "Accelerate feature delivery for ART 1"
+            keyResults: [
+                "Decrease average lead time by 15%",
+                "Increase release frequency to bi-weekly"
+            ]
+            owner: "Agile Release Train 1"
+        }
+        Phoenix_OKR_1: #OKR & {
+            objective: "Improve UserService reliability"
+            keyResults: [
+                "Achieve 99.9% uptime for UserService",
+                "Reduce critical bugs in UserService by 50%"
+            ]
+            owner: "Team Phoenix"
+        }
+        Titan_OKR_1: #OKR & {
+            objective: "Enhance WebApp performance"
+            keyResults: [
+                "Reduce page load time by 2 seconds",
+                "Improve Lighthouse score to 90+"
+            ]
+            owner: "Team Titan"
+        }
+    }
+
     teams: [
         #Team & {
             name:  "Team Phoenix"
             train: myOrg.trains[0]
             memberNames: ["Alice", "Bob", "Charlie"]
             artifactNames: ["UserService", "OrderService"] // Team Phoenix owns these artifacts
+            okrNames: ["Phoenix_OKR_1"]
         },
         #Team & {
             name:  "Team Titan"
             train: myOrg.trains[0]
             memberNames: ["David", "Eve", "Frank"]
             artifactNames: ["PaymentService", "WebApp", "SharedLibrary"] // Team Titan owns these artifacts
+            okrNames: ["Titan_OKR_1"]
         },
     ]
 }
