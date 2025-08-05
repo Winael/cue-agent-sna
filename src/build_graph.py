@@ -4,27 +4,39 @@ from .load_cue_model import load_model
 
 def build_graph(model):
     """Builds a NetworkX graph from the CUE model data."""
-    G = nx.Graph()
+    G = nx.DiGraph()
 
     org_data = model.get("myOrg", {})
     teams = org_data.get("teams", [])
+    all_members = org_data.get("members", {})
+
+    # Add all members first to ensure they exist before adding manager edges
+    for member_name, member_data in all_members.items():
+        G.add_node(member_name, type="Member", **member_data)
 
     for team in teams:
         team_name = team.get("name")
         G.add_node(team_name, type="Team")
 
-        members = team.get("members", [])
-        member_names = [member.get("name") for member in members]
+        member_names_in_team = team.get("memberNames", [])
 
-        for member in members:
-            member_name = member.get("name")
-            G.add_node(member_name, type="Member", role=member.get("role"), team=team_name)
-            G.add_edge(team_name, member_name)
+        # Add edges between team and its members
+        for member_name in member_names_in_team:
+            G.add_edge(team_name, member_name, relation="belongs_to")
 
-        # Add edges between all members of the team
-        for i in range(len(member_names)):
-            for j in range(i + 1, len(member_names)):
-                G.add_edge(member_names[i], member_names[j])
+        # Add edges between all members of the team (undirected for collaboration)
+        for i in range(len(member_names_in_team)):
+            for j in range(i + 1, len(member_names_in_team)):
+                # Ensure we don't add duplicate edges if already added by manager relationship
+                if not G.has_edge(member_names_in_team[i], member_names_in_team[j]) and \
+                   not G.has_edge(member_names_in_team[j], member_names_in_team[i]):
+                    G.add_edge(member_names_in_team[i], member_names_in_team[j], relation="collaborates_with")
+
+    # Add manager relationships (directed edges)
+    for member_name, member_data in all_members.items():
+        manager_name = member_data.get("manager")
+        if manager_name and manager_name in all_members:
+            G.add_edge(manager_name, member_name, relation="manages")
 
     return G
 
@@ -40,11 +52,15 @@ def draw_graph(G):
         else:
             node_colors.append('lightgreen')
 
-    nx.draw(G, pos, with_labels=True, node_size=2000, node_color=node_colors, font_size=10, font_weight='bold')
+    nx.draw(G, pos, with_labels=True, node_size=2000, node_color=node_colors, font_size=10, font_weight='bold', arrows=True)
     
     # Add role labels to member nodes
     labels = {n: G.nodes[n].get('role', '') for n in G.nodes if G.nodes[n].get('type') == 'Member'}
     nx.draw_networkx_labels(G, pos, labels=labels, font_size=8, verticalalignment='bottom')
+
+    # Add edge labels for relationships
+    edge_labels = nx.get_edge_attributes(G, 'relation')
+    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, font_size=7, label_pos=0.3)
 
     plt.title("Organizational Network Graph")
     plt.savefig("org_graph.png")
