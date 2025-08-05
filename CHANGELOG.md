@@ -16,7 +16,7 @@
 - Python scripts in `src/`:
     - `load_cue_model.py`: Exports CUE model to JSON.
     - `build_graph.py`: Builds and visualizes the organizational network graph using NetworkX, incorporating all modeled entities and their relationships (teams, members, managers, artifacts, rituals, OKRs).
-    - `analyze_graph.py`: Calculates and displays Social Network Analysis (SNA) metrics (degree, betweenness, closeness centrality) for the organizational graph.
+    - `analyze_graph.py`: Calculates and displays Social Network Analysis (SNA) metrics (degree, betweenness, closeness centrality, average clustering coefficient, community detection, assortativity by role/seniority, PageRank) for the organizational graph.
 - Detailed CIR documentation (`docs/02_experimentations/02_01_modele_organisationnel.md`) describing the CUE organizational model.
 
 ### Changed
