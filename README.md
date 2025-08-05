@@ -56,9 +56,16 @@ source venv/bin/activate
 python -m src.build_graph
 ```
 
-### 3. Analyse du Graphe (À venir)
+### 3. Analyse du Graphe
 
-*(Instructions pour l'analyse du graphe avec NetworkX et les métriques SNA seront ajoutées ici.)*
+Le script Python `src/analyze_graph.py` permet de calculer et d'afficher des métriques d'analyse de réseaux sociaux (SNA) à partir du graphe d'organisation.
+
+Pour exécuter l'analyse du graphe :
+
+```bash
+source venv/bin/activate
+python -m src.analyze_graph
+```
 
 ### 4. Agents IA et Simulation (À venir)
 
