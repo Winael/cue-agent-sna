@@ -35,4 +35,31 @@ Ce projet s'inscrit au croisement de plusieurs disciplines :
 
 ## Utilisation
 
-*(Instructions à venir)*
+### 1. Modélisation de l'organisation avec CUE
+
+Le cœur de la modélisation organisationnelle se trouve dans le fichier `cue/model.cue`. Ce fichier définit la structure de l'organisation, incluant les chaînes de valeur, portefeuilles, trains SAFe, équipes, membres, artefacts, rituels et OKRs.
+
+Pour valider le modèle CUE et visualiser sa structure en JSON :
+
+```bash
+cue eval cue/model.cue
+```
+
+### 2. Génération et Visualisation du Graphe d'Organisation
+
+Le script Python `src/build_graph.py` permet de transformer le modèle CUE en un graphe de réseau social NetworkX et de le visualiser.
+
+Pour générer le graphe (le fichier `org_graph.png` sera créé à la racine du projet) :
+
+```bash
+source venv/bin/activate
+python -m src.build_graph
+```
+
+### 3. Analyse du Graphe (À venir)
+
+*(Instructions pour l'analyse du graphe avec NetworkX et les métriques SNA seront ajoutées ici.)*
+
+### 4. Agents IA et Simulation (À venir)
+
+*(Instructions pour l'utilisation des agents IA avec LangGraph pour la simulation et la restructuration organisationnelle seront ajoutées ici.)*
