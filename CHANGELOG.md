@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.0 - 2025-08-05
+
+### Added
+- Added `src/analyze_graph.py` for calculating and displaying Social Network Analysis (SNA) metrics (degree, betweenness, closeness centrality).
+- Created `docs/02_experimentations/02_01_modele_organisationnel.md` to provide detailed documentation of the CUE organizational model.
+
+### Changed
+- Updated `README.md` with comprehensive usage instructions for CUE model evaluation, graph generation, and graph analysis.
+- Updated `docs/01_objectifs.md` to reflect progress on formalizing structures and projecting them into an analysis graph.
+
 ## 0.1.0 - 2025-08-05
 
 ### Added
