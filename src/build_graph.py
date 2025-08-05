@@ -9,20 +9,30 @@ def build_graph(model):
     org_data = model.get("myOrg", {})
     teams = org_data.get("teams", [])
     all_members = org_data.get("members", {})
+    all_artifacts = org_data.get("artifacts", {})
 
     # Add all members first to ensure they exist before adding manager edges
     for member_name, member_data in all_members.items():
         G.add_node(member_name, type="Member", **member_data)
+
+    # Add all artifacts first
+    for artifact_name, artifact_data in all_artifacts.items():
+        G.add_node(artifact_name, **artifact_data)
 
     for team in teams:
         team_name = team.get("name")
         G.add_node(team_name, type="Team")
 
         member_names_in_team = team.get("memberNames", [])
+        artifact_names_in_team = team.get("artifactNames", [])
 
         # Add edges between team and its members
         for member_name in member_names_in_team:
             G.add_edge(team_name, member_name, relation="belongs_to")
+
+        # Add edges between team and its artifacts
+        for artifact_name in artifact_names_in_team:
+            G.add_edge(team_name, artifact_name, relation="owns")
 
         # Add edges between all members of the team (undirected for collaboration)
         for i in range(len(member_names_in_team)):
@@ -38,6 +48,12 @@ def build_graph(model):
         if manager_name and manager_name in all_members:
             G.add_edge(manager_name, member_name, relation="manages")
 
+    # Add artifact dependencies (directed edges)
+    for artifact_name, artifact_data in all_artifacts.items():
+        for dependency in artifact_data.get("dependsOn", []):
+            if dependency in all_artifacts:
+                G.add_edge(artifact_name, dependency, relation="depends_on")
+
     return G
 
 def draw_graph(G):
@@ -47,10 +63,15 @@ def draw_graph(G):
 
     node_colors = []
     for node in G.nodes(data=True):
-        if node[1]['type'] == 'Team':
+        node_type = node[1]['type']
+        if node_type == 'Team':
             node_colors.append('skyblue')
-        else:
+        elif node_type == 'Member':
             node_colors.append('lightgreen')
+        elif node_type == 'Artifact':
+            node_colors.append('lightcoral')
+        else:
+            node_colors.append('lightgray')
 
     nx.draw(G, pos, with_labels=True, node_size=2000, node_color=node_colors, font_size=10, font_weight='bold', arrows=True)
     

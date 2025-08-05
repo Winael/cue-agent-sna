@@ -22,10 +22,17 @@
     manager:   string | null // New field for manager's name
 }
 
+#Artifact: {
+    name: string
+    type: "service" | "application" | "library"
+    dependsOn: [...string] // Names of other artifacts this one depends on
+}
+
 #Team: {
     name:    string
     train:   #SAFeTrain
     memberNames: [...string] // Changed from 'members'
+    artifactNames: [...string] // New field for artifacts owned by the team
 }
 
 myOrg: {
@@ -59,16 +66,27 @@ myOrg: {
         Frank:   #Member & {name: "Frank", role: "Developer", skills: ["Python", "Django", "DevOps"], seniority: "Senior", workload: 1.0, manager: "David"}
     }
 
+    artifacts: [name=string]: #Artifact // New section for all artifacts
+    artifacts: {
+        UserService: #Artifact & {name: "UserService", type: "service", dependsOn: []}
+        OrderService: #Artifact & {name: "OrderService", type: "service", dependsOn: ["UserService"]}
+        PaymentService: #Artifact & {name: "PaymentService", type: "service", dependsOn: ["UserService"]}
+        WebApp: #Artifact & {name: "WebApp", type: "application", dependsOn: ["OrderService", "PaymentService"]}
+        SharedLibrary: #Artifact & {name: "SharedLibrary", type: "library", dependsOn: []}
+    }
+
     teams: [
         #Team & {
             name:  "Team Phoenix"
             train: myOrg.trains[0]
-            memberNames: ["Alice", "Bob", "Charlie"] // Referencing members by name
+            memberNames: ["Alice", "Bob", "Charlie"]
+            artifactNames: ["UserService", "OrderService"] // Team Phoenix owns these artifacts
         },
         #Team & {
             name:  "Team Titan"
             train: myOrg.trains[0]
-            memberNames: ["David", "Eve", "Frank"] // Referencing members by name
+            memberNames: ["David", "Eve", "Frank"]
+            artifactNames: ["PaymentService", "WebApp", "SharedLibrary"] // Team Titan owns these artifacts
         },
     ]
 }
