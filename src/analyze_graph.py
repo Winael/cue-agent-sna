@@ -1,4 +1,5 @@
 import networkx as nx
+import community as co # Import the community module
 from .build_graph import build_graph
 from .load_cue_model import load_model
 
@@ -39,6 +40,44 @@ def analyze_graph(G):
     sorted_closeness = sorted(closeness_centrality.items(), key=lambda item: item[1], reverse=True)
     for node, centrality in sorted_closeness[:5]:
         print(f"  {node}: {centrality:.4f}")
+
+    # Average Clustering Coefficient
+    # Convert to undirected graph for clustering coefficient calculation
+    undirected_G = G.to_undirected()
+    avg_clustering = nx.average_clustering(undirected_G)
+    print(f"\nAverage Clustering Coefficient: {avg_clustering:.4f}")
+
+    # Community Detection (Louvain method)
+    print("\nCommunity Detection (Louvain Method):")
+    partition = co.best_partition(undirected_G)
+    communities = {}
+    for node, comm_id in partition.items():
+        if comm_id not in communities:
+            communities[comm_id] = []
+        communities[comm_id].append(node)
+
+    for comm_id, nodes in communities.items():
+        print(f"  Community {comm_id}: {nodes}")
+
+    # Assortativity by Role
+    member_roles = {n: G.nodes[n]['role'] for n in G.nodes if G.nodes[n].get('type') == 'Member' and 'role' in G.nodes[n]}
+    if member_roles:
+        role_assortativity = nx.attribute_assortativity_coefficient(undirected_G, "role")
+        print(f"\nAssortativity by Role: {role_assortativity:.4f}")
+
+    # Assortativity by Seniority
+    member_seniorities = {n: G.nodes[n]['seniority'] for n in G.nodes if G.nodes[n].get('type') == 'Member' and 'seniority' in G.nodes[n]}
+    if member_seniorities:
+        seniority_assortativity = nx.attribute_assortativity_coefficient(undirected_G, "seniority")
+        print(f"Assortativity by Seniority: {seniority_assortativity:.4f}")
+
+    # PageRank
+    print("\nPageRank (top 5):")
+    pagerank = nx.pagerank(G)
+    sorted_pagerank = sorted(pagerank.items(), key=lambda item: item[1], reverse=True)
+    for node, score in sorted_pagerank[:5]:
+        print(f"  {node}: {score:.4f}")
+
 
 if __name__ == "__main__":
     model = load_model()
