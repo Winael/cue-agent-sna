@@ -1,6 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
-from .load_cue_model import load_model
+import json
+from load_cue_model import load_model
 
 def build_graph(model):
     """Builds a NetworkX graph from the CUE model data."""
@@ -12,6 +13,30 @@ def build_graph(model):
     all_artifacts = org_data.get("artifacts", {})
     all_rituals = org_data.get("rituals", {})
     all_okrs = org_data.get("okrs", {})
+    value_chains = org_data.get("valueChains", [])
+    portfolios = org_data.get("portfolios", [])
+    trains = org_data.get("trains", [])
+
+    # Add value chains
+    for vc in value_chains:
+        vc_name = vc.get("name")
+        G.add_node(vc_name, type="ValueChain", **vc)
+
+    # Add portfolios
+    for portfolio in portfolios:
+        portfolio_name = portfolio.get("name")
+        G.add_node(portfolio_name, type="Portfolio", **portfolio)
+        vc_name = portfolio.get("valueChain", {}).get("name")
+        if vc_name and G.has_node(vc_name):
+            G.add_edge(portfolio_name, vc_name, relation="part_of")
+
+    # Add SAFe trains
+    for train in trains:
+        train_name = train.get("name")
+        G.add_node(train_name, type="SAFeTrain", **train)
+        portfolio_name = train.get("portfolio", {}).get("name")
+        if portfolio_name and G.has_node(portfolio_name):
+            G.add_edge(train_name, portfolio_name, relation="part_of")
 
     # Add all members first to ensure they exist before adding manager edges
     for member_name, member_data in all_members.items():
@@ -36,6 +61,11 @@ def build_graph(model):
         member_names_in_team = team.get("memberNames", [])
         artifact_names_in_team = team.get("artifactNames", [])
         okr_names_in_team = team.get("okrNames", [])
+
+        # Add edge between team and its train
+        train_name = team.get("train", {}).get("name")
+        if train_name and G.has_node(train_name):
+            G.add_edge(team_name, train_name, relation="belongs_to")
 
         # Add edges between team and its members
         for member_name in member_names_in_team:
@@ -138,8 +168,46 @@ def draw_graph(G):
     plt.savefig("org_graph.png")
     print("Graph saved to org_graph.png")
 
+def export_graph_to_json(G, filename="dashboard/public/graph_data.json"):
+    """Exports the NetworkX graph to a JSON format suitable for Sigma.js."""
+    nodes = []
+    edges = []
+
+    # Generate positions for nodes (using the same layout as for drawing)
+    pos = nx.spring_layout(G, k=0.5, iterations=50)
+
+    for i, node_id in enumerate(G.nodes()):
+        node_data = G.nodes[node_id]
+        x, y = pos[node_id]
+        nodes.append({
+            "id": node_id,
+            "label": node_id,
+            "x": float(x),
+            "y": float(y),
+            "size": 10, # Default size, can be adjusted
+            "color": "#999", # Default color, can be adjusted based on type
+            "attributes": node_data # Include all node attributes
+        })
+
+    for i, (source, target, edge_data) in enumerate(G.edges(data=True)):
+        edges.append({
+            "id": f"e{i}",
+            "source": source,
+            "target": target,
+            "label": edge_data.get("relation", ""),
+            "type": "arrow", # For directed edges
+            "attributes": edge_data # Include all edge attributes
+        })
+
+    graph_data = {"nodes": nodes, "edges": edges}
+
+    with open(filename, 'w') as f:
+        json.dump(graph_data, f, indent=2)
+    print(f"Graph data exported to {filename}")
+
 if __name__ == "__main__":
     model = load_model()
     if model:
         graph = build_graph(model)
         draw_graph(graph)
+        export_graph_to_json(graph)

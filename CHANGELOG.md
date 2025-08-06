@@ -1,6 +1,29 @@
 # Changelog
 
-## 1.0.0 - 2025-08-05
+## 0.2.0 - 2025-08-06
+
+### Added
+- **Interactive Dashboard:** Created a new React-based dashboard in the `dashboard/` directory for interactive graph visualization using `sigma.js`.
+- **Dashboard Features:**
+    - Visualization of the complete organizational graph.
+    - Panning and zooming capabilities.
+    - Click-to-inspect panel for both nodes and edges, showing detailed attributes.
+    - Color-coded nodes based on their type (Member, Team, Service, etc.) for improved readability.
+    - A dynamic legend explaining the node color codes.
+    - Drag-and-drop functionality to manually reposition nodes.
+- **CIR Documentation:** Added a new CIR document (`docs/02_experimentations/02_02_dashboard_interactif.md`) detailing the experimental work and technical challenges overcome during the dashboard's development.
+
+### Changed
+- **Graph Generation (`src/build_graph.py`):**
+    - Now processes and adds `ValueChain`, `Portfolio`, and `SAFeTrain` entities from the CUE model to the graph.
+    - Establishes `belongs_to` relationships between `Teams` and `SAFeTrains`.
+- **Project Documentation (`README.md`):**
+    - The main `README.md` was updated with instructions on how to run the new interactive dashboard.
+    - A dedicated `README.md` was created for the dashboard itself.
+- **Python Scripts (`src/`):**
+    - Modified `build_graph.py` and `analyze_graph.py` to use direct imports instead of relative ones, allowing them to be run as standalone scripts.
+
+## 0.1.0 - 2025-08-05
 
 ### Added
 - Initial project setup with virtual environment and core Python dependencies (`ipython`, `langgraph`, `langchain`, `networkx`, `matplotlib`).

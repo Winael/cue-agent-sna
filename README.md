@@ -67,6 +67,18 @@ source venv/bin/activate
 python -m src.analyze_graph
 ```
 
-### 4. Agents IA et Simulation (À venir)
+### 4. Dashboard Interactif
+
+Un dashboard interactif est disponible pour explorer le graphe de l'organisation. Pour le lancer :
+
+```bash
+cd dashboard
+npm install
+npm start
+```
+
+Le dashboard permet de visualiser le graphe, de zoomer, de déplacer les noeuds, et d'afficher les détails des noeuds et des relations en cliquant dessus.
+
+### 5. Agents IA et Simulation (À venir)
 
 *(Instructions pour l'utilisation des agents IA avec LangGraph pour la simulation et la restructuration organisationnelle seront ajoutées ici.)*

@@ -1,7 +1,7 @@
 import networkx as nx
 import community as co # Import the community module
-from .build_graph import build_graph
-from .load_cue_model import load_model
+from build_graph import build_graph
+from load_cue_model import load_model
 
 def analyze_graph(G):
     """Performs basic SNA on the graph and prints key metrics."""
