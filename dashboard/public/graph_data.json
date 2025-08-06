@@ -1,0 +1,860 @@
+{
+  "nodes": [
+    {
+      "id": "Product Development",
+      "label": "Product Development",
+      "x": -0.6981880005130229,
+      "y": 0.5403308333676609,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "ValueChain",
+        "name": "Product Development"
+      }
+    },
+    {
+      "id": "Digital Transformation",
+      "label": "Digital Transformation",
+      "x": 0.1401574793190374,
+      "y": 0.092358722091441,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Portfolio",
+        "name": "Digital Transformation",
+        "valueChain": {
+          "name": "Product Development"
+        },
+        "okrNames": [
+          "Portfolio_OKR_1"
+        ]
+      }
+    },
+    {
+      "id": "Agile Release Train 1",
+      "label": "Agile Release Train 1",
+      "x": 0.5335694212089267,
+      "y": 0.06763019682986914,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "SAFeTrain",
+        "name": "Agile Release Train 1",
+        "portfolio": {
+          "name": "Digital Transformation",
+          "valueChain": {
+            "name": "Product Development"
+          },
+          "okrNames": [
+            "Portfolio_OKR_1"
+          ]
+        },
+        "okrNames": [
+          "ART_OKR_1"
+        ]
+      }
+    },
+    {
+      "id": "Alice",
+      "label": "Alice",
+      "x": -0.2943950735787587,
+      "y": 0.2843127531768174,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "Alice",
+        "role": "Product Owner",
+        "skills": [
+          "Product Management",
+          "Agile"
+        ],
+        "seniority": "Senior",
+        "workload": 0.8,
+        "manager": null
+      }
+    },
+    {
+      "id": "Bob",
+      "label": "Bob",
+      "x": -0.5854102105692943,
+      "y": 0.42125753459029813,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "Bob",
+        "role": "Scrum Master",
+        "skills": [
+          "Agile",
+          "Coaching"
+        ],
+        "seniority": "Mid",
+        "workload": 0.9,
+        "manager": "Alice"
+      }
+    },
+    {
+      "id": "Charlie",
+      "label": "Charlie",
+      "x": -0.47257272290078756,
+      "y": 0.7829872495804531,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "Charlie",
+        "role": "Developer",
+        "skills": [
+          "Python",
+          "Go",
+          "CUE"
+        ],
+        "seniority": "Junior",
+        "workload": 1.0,
+        "manager": "Bob"
+      }
+    },
+    {
+      "id": "David",
+      "label": "David",
+      "x": -0.2689371768260746,
+      "y": -0.4437466793778575,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "David",
+        "role": "Product Owner",
+        "skills": [
+          "Product Management",
+          "UX"
+        ],
+        "seniority": "Senior",
+        "workload": 0.7,
+        "manager": null
+      }
+    },
+    {
+      "id": "Eve",
+      "label": "Eve",
+      "x": -0.4820516377879991,
+      "y": -0.8426849369039671,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "Eve",
+        "role": "Developer",
+        "skills": [
+          "JavaScript",
+          "React",
+          "Node.js"
+        ],
+        "seniority": "Mid",
+        "workload": 0.9,
+        "manager": "David"
+      }
+    },
+    {
+      "id": "Frank",
+      "label": "Frank",
+      "x": -0.6582471832787501,
+      "y": -0.6568935190483077,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Member",
+        "name": "Frank",
+        "role": "Developer",
+        "skills": [
+          "Python",
+          "Django",
+          "DevOps"
+        ],
+        "seniority": "Senior",
+        "workload": 1.0,
+        "manager": "David"
+      }
+    },
+    {
+      "id": "UserService",
+      "label": "UserService",
+      "x": 0.5054682015758514,
+      "y": 0.6640174226236325,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "UserService",
+        "type": "service",
+        "dependsOn": []
+      }
+    },
+    {
+      "id": "OrderService",
+      "label": "OrderService",
+      "x": 0.5645179752719078,
+      "y": 0.27357277674563135,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "OrderService",
+        "type": "service",
+        "dependsOn": [
+          "UserService"
+        ]
+      }
+    },
+    {
+      "id": "PaymentService",
+      "label": "PaymentService",
+      "x": 0.744121748763631,
+      "y": 0.642662491104421,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "PaymentService",
+        "type": "service",
+        "dependsOn": [
+          "UserService"
+        ]
+      }
+    },
+    {
+      "id": "WebApp",
+      "label": "WebApp",
+      "x": 0.6144801995997836,
+      "y": 0.3518268964215938,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "WebApp",
+        "type": "application",
+        "dependsOn": [
+          "OrderService",
+          "PaymentService"
+        ]
+      }
+    },
+    {
+      "id": "SharedLibrary",
+      "label": "SharedLibrary",
+      "x": 0.7033104405664059,
+      "y": -0.7454229738650509,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "SharedLibrary",
+        "type": "library",
+        "dependsOn": []
+      }
+    },
+    {
+      "id": "PhoenixDaily",
+      "label": "PhoenixDaily",
+      "x": -0.4197237634325282,
+      "y": 0.4193656833755082,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "Phoenix Daily",
+        "type": "Daily Scrum",
+        "frequency": "daily",
+        "participants": [
+          "Alice",
+          "Bob",
+          "Charlie"
+        ]
+      }
+    },
+    {
+      "id": "TitanDaily",
+      "label": "TitanDaily",
+      "x": -0.40009367736173784,
+      "y": -0.6478102903205505,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "Titan Daily",
+        "type": "Daily Scrum",
+        "frequency": "daily",
+        "participants": [
+          "David",
+          "Eve",
+          "Frank"
+        ]
+      }
+    },
+    {
+      "id": "ART_Sync",
+      "label": "ART_Sync",
+      "x": -0.4037001430969728,
+      "y": 0.030466529467001107,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "ART Sync",
+        "type": "Scrum of Scrums",
+        "frequency": "weekly",
+        "participants": [
+          "Alice",
+          "David",
+          "Bob"
+        ]
+      }
+    },
+    {
+      "id": "PI_Planning_Q3",
+      "label": "PI_Planning_Q3",
+      "x": -0.4944938133184811,
+      "y": -0.07710931204632944,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "name": "PI Planning Q3",
+        "type": "PI Planning",
+        "frequency": "quarterly",
+        "participants": [
+          "Alice",
+          "Bob",
+          "Charlie",
+          "David",
+          "Eve",
+          "Frank"
+        ]
+      }
+    },
+    {
+      "id": "Portfolio_OKR_1",
+      "label": "Portfolio_OKR_1",
+      "x": 0.9671863485757052,
+      "y": -0.35748413946665214,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "OKR",
+        "objective": "Increase customer satisfaction for Digital Transformation portfolio",
+        "keyResults": [
+          "Achieve 90% CSAT score for key products",
+          "Reduce customer support tickets by 20%"
+        ],
+        "owner": "Digital Transformation"
+      }
+    },
+    {
+      "id": "ART_OKR_1",
+      "label": "ART_OKR_1",
+      "x": 0.9665742038256316,
+      "y": 0.02267679907993627,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "OKR",
+        "objective": "Accelerate feature delivery for ART 1",
+        "keyResults": [
+          "Decrease average lead time by 15%",
+          "Increase release frequency to bi-weekly"
+        ],
+        "owner": "Agile Release Train 1"
+      }
+    },
+    {
+      "id": "Phoenix_OKR_1",
+      "label": "Phoenix_OKR_1",
+      "x": -0.9086217690816046,
+      "y": 0.10770505603236337,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "OKR",
+        "objective": "Improve UserService reliability",
+        "keyResults": [
+          "Achieve 99.9% uptime for UserService",
+          "Reduce critical bugs in UserService by 50%"
+        ],
+        "owner": "Team Phoenix"
+      }
+    },
+    {
+      "id": "Titan_OKR_1",
+      "label": "Titan_OKR_1",
+      "x": 0.24482066782194722,
+      "y": -1.0,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "OKR",
+        "objective": "Enhance WebApp performance",
+        "keyResults": [
+          "Reduce page load time by 2 seconds",
+          "Improve Lighthouse score to 90+"
+        ],
+        "owner": "Team Titan"
+      }
+    },
+    {
+      "id": "Team Phoenix",
+      "label": "Team Phoenix",
+      "x": -0.08056623576485843,
+      "y": 0.36679751781830944,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Team"
+      }
+    },
+    {
+      "id": "Team Titan",
+      "label": "Team Titan",
+      "x": 0.1827947209820421,
+      "y": -0.2968166112762232,
+      "size": 10,
+      "color": "#999",
+      "attributes": {
+        "type": "Team"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "e0",
+      "source": "Digital Transformation",
+      "target": "Product Development",
+      "label": "part_of",
+      "type": "arrow",
+      "attributes": {
+        "relation": "part_of"
+      }
+    },
+    {
+      "id": "e1",
+      "source": "Digital Transformation",
+      "target": "Portfolio_OKR_1",
+      "label": "owns_okr",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns_okr"
+      }
+    },
+    {
+      "id": "e2",
+      "source": "Agile Release Train 1",
+      "target": "Digital Transformation",
+      "label": "part_of",
+      "type": "arrow",
+      "attributes": {
+        "relation": "part_of"
+      }
+    },
+    {
+      "id": "e3",
+      "source": "Agile Release Train 1",
+      "target": "ART_OKR_1",
+      "label": "owns_okr",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns_okr"
+      }
+    },
+    {
+      "id": "e4",
+      "source": "Alice",
+      "target": "Bob",
+      "label": "manages",
+      "type": "arrow",
+      "attributes": {
+        "relation": "manages"
+      }
+    },
+    {
+      "id": "e5",
+      "source": "Alice",
+      "target": "Charlie",
+      "label": "collaborates_with",
+      "type": "arrow",
+      "attributes": {
+        "relation": "collaborates_with"
+      }
+    },
+    {
+      "id": "e6",
+      "source": "Bob",
+      "target": "Charlie",
+      "label": "manages",
+      "type": "arrow",
+      "attributes": {
+        "relation": "manages"
+      }
+    },
+    {
+      "id": "e7",
+      "source": "David",
+      "target": "Eve",
+      "label": "manages",
+      "type": "arrow",
+      "attributes": {
+        "relation": "manages"
+      }
+    },
+    {
+      "id": "e8",
+      "source": "David",
+      "target": "Frank",
+      "label": "manages",
+      "type": "arrow",
+      "attributes": {
+        "relation": "manages"
+      }
+    },
+    {
+      "id": "e9",
+      "source": "Eve",
+      "target": "Frank",
+      "label": "collaborates_with",
+      "type": "arrow",
+      "attributes": {
+        "relation": "collaborates_with"
+      }
+    },
+    {
+      "id": "e10",
+      "source": "OrderService",
+      "target": "UserService",
+      "label": "depends_on",
+      "type": "arrow",
+      "attributes": {
+        "relation": "depends_on"
+      }
+    },
+    {
+      "id": "e11",
+      "source": "PaymentService",
+      "target": "UserService",
+      "label": "depends_on",
+      "type": "arrow",
+      "attributes": {
+        "relation": "depends_on"
+      }
+    },
+    {
+      "id": "e12",
+      "source": "WebApp",
+      "target": "OrderService",
+      "label": "depends_on",
+      "type": "arrow",
+      "attributes": {
+        "relation": "depends_on"
+      }
+    },
+    {
+      "id": "e13",
+      "source": "WebApp",
+      "target": "PaymentService",
+      "label": "depends_on",
+      "type": "arrow",
+      "attributes": {
+        "relation": "depends_on"
+      }
+    },
+    {
+      "id": "e14",
+      "source": "PhoenixDaily",
+      "target": "Alice",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e15",
+      "source": "PhoenixDaily",
+      "target": "Bob",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e16",
+      "source": "PhoenixDaily",
+      "target": "Charlie",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e17",
+      "source": "TitanDaily",
+      "target": "David",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e18",
+      "source": "TitanDaily",
+      "target": "Eve",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e19",
+      "source": "TitanDaily",
+      "target": "Frank",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e20",
+      "source": "ART_Sync",
+      "target": "Alice",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e21",
+      "source": "ART_Sync",
+      "target": "David",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e22",
+      "source": "ART_Sync",
+      "target": "Bob",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e23",
+      "source": "PI_Planning_Q3",
+      "target": "Alice",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e24",
+      "source": "PI_Planning_Q3",
+      "target": "Bob",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e25",
+      "source": "PI_Planning_Q3",
+      "target": "Charlie",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e26",
+      "source": "PI_Planning_Q3",
+      "target": "David",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e27",
+      "source": "PI_Planning_Q3",
+      "target": "Eve",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e28",
+      "source": "PI_Planning_Q3",
+      "target": "Frank",
+      "label": "participates_in",
+      "type": "arrow",
+      "attributes": {
+        "relation": "participates_in"
+      }
+    },
+    {
+      "id": "e29",
+      "source": "Team Phoenix",
+      "target": "Agile Release Train 1",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e30",
+      "source": "Team Phoenix",
+      "target": "Alice",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e31",
+      "source": "Team Phoenix",
+      "target": "Bob",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e32",
+      "source": "Team Phoenix",
+      "target": "Charlie",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e33",
+      "source": "Team Phoenix",
+      "target": "UserService",
+      "label": "owns",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns"
+      }
+    },
+    {
+      "id": "e34",
+      "source": "Team Phoenix",
+      "target": "OrderService",
+      "label": "owns",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns"
+      }
+    },
+    {
+      "id": "e35",
+      "source": "Team Phoenix",
+      "target": "Phoenix_OKR_1",
+      "label": "owns_okr",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns_okr"
+      }
+    },
+    {
+      "id": "e36",
+      "source": "Team Titan",
+      "target": "Agile Release Train 1",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e37",
+      "source": "Team Titan",
+      "target": "David",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e38",
+      "source": "Team Titan",
+      "target": "Eve",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e39",
+      "source": "Team Titan",
+      "target": "Frank",
+      "label": "belongs_to",
+      "type": "arrow",
+      "attributes": {
+        "relation": "belongs_to"
+      }
+    },
+    {
+      "id": "e40",
+      "source": "Team Titan",
+      "target": "PaymentService",
+      "label": "owns",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns"
+      }
+    },
+    {
+      "id": "e41",
+      "source": "Team Titan",
+      "target": "WebApp",
+      "label": "owns",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns"
+      }
+    },
+    {
+      "id": "e42",
+      "source": "Team Titan",
+      "target": "SharedLibrary",
+      "label": "owns",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns"
+      }
+    },
+    {
+      "id": "e43",
+      "source": "Team Titan",
+      "target": "Titan_OKR_1",
+      "label": "owns_okr",
+      "type": "arrow",
+      "attributes": {
+        "relation": "owns_okr"
+      }
+    }
+  ]
+}
