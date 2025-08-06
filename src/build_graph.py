@@ -1,7 +1,7 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import json
-from load_cue_model import load_model
+from src.load_cue_model import load_model
 
 def build_graph(model):
     """Builds a NetworkX graph from the CUE model data."""
@@ -168,62 +168,8 @@ def draw_graph(G):
     plt.savefig("org_graph.png")
     print("Graph saved to org_graph.png")
 
-def export_graph_to_json(G, filename="dashboard/public/graph_data.json"):
-    """Exports the NetworkX graph to a JSON format suitable for Sigma.js."""
-    nodes = []
-    edges = []
-
-    # Generate positions for nodes (using the same layout as for drawing)
-    pos = nx.spring_layout(G, k=0.5, iterations=50)
-
-    for i, node_id in enumerate(G.nodes()):
-        node_data = G.nodes[node_id]
-        x, y = pos[node_id]
-        nodes.append({
-            "id": node_id,
-            "label": node_id,
-            "x": float(x),
-            "y": float(y),
-            "size": 10, # Default size, can be adjusted
-            "color": "#999", # Default color, can be adjusted based on type
-            "attributes": node_data # Include all node attributes
-        })
-
-    for i, (source, target, edge_data) in enumerate(G.edges(data=True)):
-        edges.append({
-            "id": f"e{i}",
-            "source": source,
-            "target": target,
-            "label": edge_data.get("relation", ""),
-            "type": "arrow", # For directed edges
-            "attributes": edge_data # Include all edge attributes
-        })
-
-    graph_data = {"nodes": nodes, "edges": edges}
-
-    with open(filename, 'w') as f:
-        json.dump(graph_data, f, indent=2)
-    print(f"Graph data exported to {filename}")
-
-def export_directory_to_json(G, filename="dashboard/public/directory_data.json"):
-    """Exports member data to a JSON format suitable for a directory."""
-    members = []
-    for node_id in G.nodes():
-        node_data = G.nodes[node_id]
-        if node_data.get("type") == "Member":
-            members.append({
-                "id": node_id,
-                "attributes": node_data
-            })
-    
-    with open(filename, 'w') as f:
-        json.dump(members, f, indent=2)
-    print(f"Directory data exported to {filename}")
-
 if __name__ == "__main__":
     model = load_model()
     if model:
         graph = build_graph(model)
         draw_graph(graph)
-        export_graph_to_json(graph)
-        export_directory_to_json(graph)

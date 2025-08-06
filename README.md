@@ -57,9 +57,9 @@ cue eval cue/model.cue
 
 ### 2. Génération et Visualisation du Graphe d'Organisation
 
-Le script Python `src/build_graph.py` permet de transformer le modèle CUE en un graphe de réseau social NetworkX et de le visualiser.
+Le script Python `src/build_graph.py` permet de transformer le modèle CUE en un graphe de réseau social NetworkX. Actuellement, il génère un fichier `org_graph.png` pour la visualisation statique. Les données pour le dashboard interactif sont désormais directement générées et servies par l'API FastAPI.
 
-Pour générer le graphe (le fichier `org_graph.png` sera créé à la racine du projet) :
+Pour générer le graphe et les données initiales :
 
 ```bash
 source venv/bin/activate
@@ -77,20 +77,21 @@ source venv/bin/activate
 python -m src.analyze_graph
 ```
 
-### 4. Dashboard Interactif
+### 4. Backend API (FastAPI) et Frontend (React)
 
-Un dashboard interactif est disponible pour explorer le graphe de l'organisation.
+Le dashboard interactif est désormais servi directement par l'API backend développée avec FastAPI. Cela simplifie le déploiement et élimine les problèmes de proxy/CORS.
 
-Pour installer les dépendances et lancer le dashboard :
+Pour lancer le serveur FastAPI (assurez-vous d'être à la racine du projet) :
 
 ```bash
-cd dashboard
-npm install
-npm start
+source venv/bin/activate
+PYTHONPATH=. uvicorn backend.main:app --host 0.0.0.0 --port 8000
 ```
 
-Le dashboard permet de visualiser le graphe, de zoomer, de déplacer les nœuds, et d'afficher les détails des nœuds et des relations en cliquant dessus. Les problèmes de rendu liés à la hauteur du conteneur ont été résolus pour une visualisation optimale.
+Une fois le backend lancé, le dashboard React sera accessible directement via votre navigateur à l'adresse `http://localhost:8000`.
 
-### 5. Agents IA et Simulation (À venir)
+Le dashboard permet de visualiser le graphe, de zoomer, de déplacer les nœuds, et d'afficher les détails des nœuds et des relations en cliquant dessus. Les problèmes de rendu liés à la hauteur du conteneur ont été résolus pour une visualisation optimale. Les requêtes API du frontend (par exemple, pour `/graph_data` ou `/directory_data`) sont maintenant faites directement au backend sans préfixe `/api`.
+
+### 6. Agents IA et Simulation (À venir)
 
 *(Instructions pour l'utilisation des agents IA avec LangGraph pour la simulation et la restructuration organisationnelle seront ajoutées ici.)*

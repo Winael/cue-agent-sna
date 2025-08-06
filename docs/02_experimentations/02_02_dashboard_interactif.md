@@ -45,6 +45,20 @@ Ces travaux ont permis d'acquérir une connaissance approfondie des points suiva
 
 Ces développements ont abouti à la création d'un outil d'analyse visuelle robuste et performant, essentiel à l'atteinte des objectifs globaux du projet de recherche.
 
+## 5. Intégration du Backend FastAPI
+
+Pour passer d'une approche basée sur des fichiers JSON statiques à une gestion dynamique des données et des requêtes SNA, un backend a été implémenté en utilisant FastAPI.
+
+- **Architecture :** Le backend est une application Python (`backend/main.py`) qui expose des endpoints API (`/graph_data`, `/directory_data`) pour servir les données du graphe et de l'annuaire. Le frontend est désormais servi directement par le backend, éliminant le besoin d'un proxy séparé.
+- **Génération Dynamique :** Les données ne sont plus lues depuis des fichiers JSON statiques, mais sont générées à la volée par le backend en utilisant les fonctions `load_model` et `build_graph` issues des scripts Python existants.
+- **Gestion des Dépendances :** Les bibliothèques `fastapi` et `uvicorn` ont été ajoutées aux dépendances Python (`requirements.txt`).
+- **Gestion des CORS :** Le backend FastAPI a été configuré avec `CORSMiddleware` pour autoriser les requêtes provenant de l'origine du frontend (`http://localhost:3000`), résolvant ainsi les erreurs de politique de sécurité du navigateur.
+- **Nettoyage :** Les fichiers JSON statiques (`dashboard/public/graph_data.json`, `dashboard/public/directory_data.json`) ont été supprimés, et les scripts Python (`src/build_graph.py`) ont été mis à jour pour ne plus les générer.
+
+Cette intégration marque une étape clé vers un dashboard entièrement interactif et extensible, capable de répondre à des requêtes SNA complexes en temps réel.
+
+Ces développements ont abouti à la création d'un outil d'analyse visuelle robuste et performant, essentiel à l'atteinte des objectifs globaux du projet de recherche.
+
 ## 4. Ajout de l'Annuaire des Membres
 
 En complément de la visualisation graphique, un onglet "Annuaire" a été ajouté au dashboard. Cet onglet permet de consulter une liste détaillée des membres de l'organisation, avec leurs attributs (rôle, équipe, compétences, etc.). Cette fonctionnalité offre une vue tabulaire et facilement consultable des données organisationnelles, complétant l'approche visuelle du graphe.

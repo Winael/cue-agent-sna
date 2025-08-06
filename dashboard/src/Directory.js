@@ -6,22 +6,28 @@ function Directory({ height }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/directory_data.json')
-      .then(response => {
+    const fetchData = async (retries = 5) => {
+      try {
+        const response = await fetch('/directory_data');
         if (!response.ok) {
+          if (response.status === 503 && retries > 0) {
+            console.warn('Backend not ready, retrying directory data fetch...');
+            setTimeout(() => fetchData(retries - 1), 2000); // Retry after 2 seconds
+            return;
+          }
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.json();
-      })
-      .then(data => {
+        const data = await response.json();
         setMembers(data);
         setLoading(false);
-      })
-      .catch(error => {
+      } catch (error) {
         console.error("Error fetching directory data:", error);
         setError(error);
         setLoading(false);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (loading) {
