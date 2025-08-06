@@ -205,9 +205,25 @@ def export_graph_to_json(G, filename="dashboard/public/graph_data.json"):
         json.dump(graph_data, f, indent=2)
     print(f"Graph data exported to {filename}")
 
+def export_directory_to_json(G, filename="dashboard/public/directory_data.json"):
+    """Exports member data to a JSON format suitable for a directory."""
+    members = []
+    for node_id in G.nodes():
+        node_data = G.nodes[node_id]
+        if node_data.get("type") == "Member":
+            members.append({
+                "id": node_id,
+                "attributes": node_data
+            })
+    
+    with open(filename, 'w') as f:
+        json.dump(members, f, indent=2)
+    print(f"Directory data exported to {filename}")
+
 if __name__ == "__main__":
     model = load_model()
     if model:
         graph = build_graph(model)
         draw_graph(graph)
         export_graph_to_json(graph)
+        export_directory_to_json(graph)

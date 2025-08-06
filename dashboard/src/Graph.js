@@ -17,7 +17,7 @@ const nodeTypeColors = {
   SAFeTrain: '#E74C3C'
 };
 
-const GraphComponent = () => {
+const GraphComponent = ({ height }) => {
   const containerRef = useRef(null);
   const sigmaInstanceRef = useRef(null);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -28,13 +28,56 @@ const GraphComponent = () => {
     if (!container) return;
 
     let isCancelled = false;
+    let graph = null; // Declare graph here
+
+    let draggedNode = null;
+    let isDragging = false;
+
+    const handleDownNode = (e) => {
+      isDragging = true;
+      draggedNode = e.node;
+      if (graph) graph.setNodeAttribute(draggedNode, 'highlighted', true);
+    };
+    const handleMouseMove = (e) => {
+      if (!isDragging || !draggedNode || !sigmaInstanceRef.current) return;
+
+      const pos = sigmaInstanceRef.current.viewportToGraph(e);
+
+      if (graph) {
+        graph.setNodeAttribute(draggedNode, 'x', pos.x);
+        graph.setNodeAttribute(draggedNode, 'y', pos.y);
+      }
+
+      e.preventSigmaDefault();
+      e.original.preventDefault();
+      e.original.stopPropagation();
+    };
+    const handleMouseUp = () => {
+      if (draggedNode && graph) {
+        graph.removeNodeAttribute(draggedNode, 'highlighted');
+      }
+      isDragging = false;
+      draggedNode = null;
+    };
+    const handleClickNode = (event) => {
+      setSelectedEdge(null);
+      if (graph) setSelectedNode({ id: event.node, attributes: graph.getNodeAttributes(event.node) });
+    };
+    const handleClickEdge = (event) => {
+      setSelectedNode(null);
+      if (graph) setSelectedEdge({ id: event.edge, attributes: graph.getEdgeAttributes(event.edge) });
+    };
+    const handleClickStage = () => {
+      setSelectedNode(null);
+      setSelectedEdge(null);
+    };
 
     fetch('/graph_data.json')
       .then(response => response.json())
       .then(data => {
         if (isCancelled) return;
 
-        const graph = new Graph();
+        graph = new Graph(); // Assign to the outer scope graph
 
         data.nodes.forEach(node => {
           graph.addNode(node.id, { 
@@ -54,54 +97,19 @@ const GraphComponent = () => {
           renderEdgeLabels: true, 
           enableEdgeEvents: true,
           autoRescale: true, 
-          autoResize: true 
+          autoResize: true,
+          allowInvalidContainer: true 
         });
         sigmaInstanceRef.current = sigma;
 
-        let draggedNode = null;
-        let isDragging = false;
+        sigma.on('downNode', handleDownNode);
+        sigma.getMouseCaptor().on('mousemove', handleMouseMove);
+        sigma.getMouseCaptor().on('mouseup', handleMouseUp);
+        sigma.on('clickNode', handleClickNode);
+        sigma.on('clickEdge', handleClickEdge);
+        sigma.on('clickStage', handleClickStage);
 
-        sigma.on('downNode', (e) => {
-          isDragging = true;
-          draggedNode = e.node;
-          graph.setNodeAttribute(draggedNode, 'highlighted', true);
-        });
-
-        sigma.getMouseCaptor().on('mousemove', (e) => {
-          if (!isDragging || !draggedNode) return;
-
-          const pos = sigma.viewportToGraph(e);
-
-          graph.setNodeAttribute(draggedNode, 'x', pos.x);
-          graph.setNodeAttribute(draggedNode, 'y', pos.y);
-
-          e.preventSigmaDefault();
-          e.original.preventDefault();
-          e.original.stopPropagation();
-        });
-
-        sigma.getMouseCaptor().on('mouseup', () => {
-          if (draggedNode) {
-            graph.removeNodeAttribute(draggedNode, 'highlighted');
-          }
-          isDragging = false;
-          draggedNode = null;
-        });
-
-        sigma.on('clickNode', (event) => {
-          setSelectedEdge(null);
-          setSelectedNode({ id: event.node, attributes: graph.getNodeAttributes(event.node) });
-        });
-
-        sigma.on('clickEdge', (event) => {
-          setSelectedNode(null);
-          setSelectedEdge({ id: event.edge, attributes: graph.getEdgeAttributes(event.edge) });
-        });
-
-        sigma.on('clickStage', () => {
-          setSelectedNode(null);
-          setSelectedEdge(null);
-        });
+        sigma.refresh();
       })
       .catch(error => {
         if (!isCancelled) {
@@ -112,14 +120,22 @@ const GraphComponent = () => {
     return () => {
       isCancelled = true;
       if (sigmaInstanceRef.current) {
-        sigmaInstanceRef.current.kill();
+        const sigma = sigmaInstanceRef.current;
+        sigma.off('downNode', handleDownNode);
+        sigma.getMouseCaptor().off('mousemove', handleMouseMove);
+        sigma.getMouseCaptor().off('mouseup', handleMouseUp);
+        sigma.off('clickNode', handleClickNode);
+        sigma.off('clickEdge', handleClickEdge);
+        sigma.off('clickStage', handleClickStage);
+
+        sigma.kill();
         sigmaInstanceRef.current = null;
       }
     };
   }, []);
 
   return (
-    <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+    <div style={{ position: 'relative', width: '100%', height: height }}>
       <div ref={containerRef} style={{ width: '100%', height: '100%' }}></div>
       <div style={{
         position: 'absolute',

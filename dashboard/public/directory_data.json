@@ -1,0 +1,101 @@
+[
+  {
+    "id": "Alice",
+    "attributes": {
+      "type": "Member",
+      "name": "Alice",
+      "role": "Product Owner",
+      "skills": [
+        "Product Management",
+        "Agile"
+      ],
+      "seniority": "Senior",
+      "workload": 0.8,
+      "manager": null,
+      "team": "Team Phoenix"
+    }
+  },
+  {
+    "id": "Bob",
+    "attributes": {
+      "type": "Member",
+      "name": "Bob",
+      "role": "Scrum Master",
+      "skills": [
+        "Agile",
+        "Coaching"
+      ],
+      "seniority": "Mid",
+      "workload": 0.9,
+      "manager": "Alice",
+      "team": "Team Phoenix"
+    }
+  },
+  {
+    "id": "Charlie",
+    "attributes": {
+      "type": "Member",
+      "name": "Charlie",
+      "role": "Developer",
+      "skills": [
+        "Python",
+        "Go",
+        "CUE"
+      ],
+      "seniority": "Junior",
+      "workload": 1.0,
+      "manager": "Bob",
+      "team": "Team Phoenix"
+    }
+  },
+  {
+    "id": "David",
+    "attributes": {
+      "type": "Member",
+      "name": "David",
+      "role": "Product Owner",
+      "skills": [
+        "Product Management",
+        "UX"
+      ],
+      "seniority": "Senior",
+      "workload": 0.7,
+      "manager": null,
+      "team": "Team Titan"
+    }
+  },
+  {
+    "id": "Eve",
+    "attributes": {
+      "type": "Member",
+      "name": "Eve",
+      "role": "Developer",
+      "skills": [
+        "JavaScript",
+        "React",
+        "Node.js"
+      ],
+      "seniority": "Mid",
+      "workload": 0.9,
+      "manager": "David",
+      "team": "Team Titan"
+    }
+  },
+  {
+    "id": "Frank",
+    "attributes": {
+      "type": "Member",
+      "name": "Frank",
+      "role": "Developer",
+      "skills": [
+        "Python",
+        "Django",
+        "DevOps"
+      ],
+      "seniority": "Senior",
+      "workload": 1.0,
+      "manager": "David",
+      "team": "Team Titan"
+    }
+  }
+]

@@ -2,7 +2,7 @@
 
 **Période :** Août 2025
 
-**Objectif :** Développer une interface de visualisation interactive pour l'exploration d'un graphe organisationnel complexe. L'objectif était de permettre une analyse visuelle des données issues du modèle CUE, en offrant des fonctionnalités telles que la sélection de nœuds/relations, la coloration sémantique et la manipulation directe du graphe.
+**Objectif :** Développer une interface de visualisation interactive pour l'exploration d'un graphe organisationnel complexe et un annuaire des membres. L'objectif était de permettre une analyse visuelle des données issues du modèle CUE, en offrant des fonctionnalités telles que la sélection de nœuds/relations, la coloration sémantique, la manipulation directe du graphe, et la consultation des détails des membres de l'organisation.
 
 ## 1. Contexte et Verrous Technologiques
 
@@ -42,5 +42,14 @@ Ces travaux ont permis d'acquérir une connaissance approfondie des points suiva
 - **Architecture de Sigma.js v3 :** Maîtrise de la séparation entre la gestion des données (`graphology`) et le rendu (`sigma`), ainsi que du système de "programmes" de rendu.
 - **Gestion du Cycle de Vie en React :** Techniques avancées pour synchroniser des bibliothèques tierces manipulant directement le DOM (ou un canvas) avec le cycle de vie de React (`useEffect`), en particulier la gestion du nettoyage pour éviter les fuites de mémoire et les artefacts visuels.
 - **Système Événementiel WebGL :** Compréhension et manipulation de systèmes d'événements de bas niveau qui opèrent en dehors du DOM standard, et leur intégration dans une application React.
+
+Ces développements ont abouti à la création d'un outil d'analyse visuelle robuste et performant, essentiel à l'atteinte des objectifs globaux du projet de recherche.
+
+## 4. Ajout de l'Annuaire des Membres
+
+En complément de la visualisation graphique, un onglet "Annuaire" a été ajouté au dashboard. Cet onglet permet de consulter une liste détaillée des membres de l'organisation, avec leurs attributs (rôle, équipe, compétences, etc.). Cette fonctionnalité offre une vue tabulaire et facilement consultable des données organisationnelles, complétant l'approche visuelle du graphe.
+
+- **Intégration :** Le composant `Directory.js` a été créé pour afficher les données des membres, chargées depuis `/directory_data.json`.
+- **Synchronisation :** La gestion de la hauteur et du rendu a été assurée de manière similaire au composant de graphe pour garantir une intégration fluide dans l'interface.
 
 Ces développements ont abouti à la création d'un outil d'analyse visuelle robuste et performant, essentiel à l'atteinte des objectifs globaux du projet de recherche.
