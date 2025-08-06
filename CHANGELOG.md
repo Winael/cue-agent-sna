@@ -1,5 +1,24 @@
 # Changelog
 
+## 0.2.1 - 2025-08-06
+
+### Fixed
+- **Dashboard Compilation:** Resolved multiple compilation errors in the React dashboard (`src/Graph.js`, `src/App.js`, `src/Directory.js`) related to undefined functions and `no-undef` issues.
+- **Graph Rendering:** Fixed "Sigma: Container has no height" error by ensuring proper height propagation through CSS (`src/App.css`, `src/index.css`) and component props.
+- **Sigma.js Compatibility:** Addressed `TypeError: this.camera.on is not a function` by removing an unnecessary `sigma.setCamera` call and setting `allowInvalidContainer: true` in Sigma.js configuration.
+
+### Added
+- **Directory Tab:** Implemented a new "Annuaire" tab in the dashboard (`src/Directory.js`) to display a detailed list of members from `directory_data.json`.
+- **CIR Documentation:** Added a new comprehensive documentation file (`docs/04_credit_impot_recherche.md`) detailing the project's eligibility for the Crédit Impôt Recherche.
+- **CUE Model Refactoring:** Restructured the CUE organizational model for improved maintainability and more efficient data management. This includes modularizing the CUE definitions into `cue/data/`, introducing `cue/main.cue` as the primary entry point, and defining schemas in `cue/types/`.
+
+### Changed
+- **Dashboard Documentation:** Updated `docs/02_experimentations/02_02_dashboard_interactif.md` to reflect the addition of the "Annuaire" tab and the resolution of rendering issues.
+- **README.md:** Updated the main `README.md` to include a link to the new CIR documentation and revised instructions for running the dashboard.
+- **CUE Model Structure:** Replaced `cue/model.cue` with a new modular structure under `cue/` for better organization and maintainability.
+- **Python Scripts:** Updated `src/build_graph.py` and `src/load_cue_model.py` to adapt to the new CUE model structure.
+
+
 ## 0.2.0 - 2025-08-06
 
 ### Added

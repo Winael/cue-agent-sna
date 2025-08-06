@@ -19,6 +19,16 @@ Ce projet s'inscrit au croisement de plusieurs disciplines :
 - Intelligence artificielle réflexive (LLM en graphe avec LangGraph).
 - Analyse de graphe (SNA).
 
+## Documentation Détaillée
+
+Pour une compréhension approfondie du projet, des expérimentations menées et des aspects liés au Crédit Impôt Recherche (CIR), veuillez consulter les documents suivants :
+
+*   [Contexte Scientifique](docs/00_contexte.md)
+*   [Objectifs du Projet](docs/01_objectifs.md)
+*   [Modèle d'Organisation Actuel](docs/02_experimentations/02_01_modele_organisationnel.md)
+*   [Fiche d'Expérimentation : Développement du Dashboard Interactif](docs/02_experimentations/02_02_dashboard_interactif.md)
+*   [Crédit Impôt Recherche (CIR)](docs/04_credit_impot_recherche.md)
+
 ## Installation
 
 1.  **Prérequis :** Assurez-vous d'avoir [Homebrew](https://brew.sh/) installé sur macOS.
@@ -69,7 +79,9 @@ python -m src.analyze_graph
 
 ### 4. Dashboard Interactif
 
-Un dashboard interactif est disponible pour explorer le graphe de l'organisation. Pour le lancer :
+Un dashboard interactif est disponible pour explorer le graphe de l'organisation.
+
+Pour installer les dépendances et lancer le dashboard :
 
 ```bash
 cd dashboard
@@ -77,7 +89,7 @@ npm install
 npm start
 ```
 
-Le dashboard permet de visualiser le graphe, de zoomer, de déplacer les noeuds, et d'afficher les détails des noeuds et des relations en cliquant dessus.
+Le dashboard permet de visualiser le graphe, de zoomer, de déplacer les nœuds, et d'afficher les détails des nœuds et des relations en cliquant dessus. Les problèmes de rendu liés à la hauteur du conteneur ont été résolus pour une visualisation optimale.
 
 ### 5. Agents IA et Simulation (À venir)
 
