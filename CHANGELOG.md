@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.2.2 - 2025-08-07
+
+### Changed
+- **Frontend/Backend Integration:** Transitioned from a separate frontend development server with proxy to serving the React frontend directly from the FastAPI backend. This eliminates proxy and CORS issues, simplifying deployment.
+    - Removed `dashboard/src/setupProxy.js`.
+    - Removed `proxy` configuration from `dashboard/package.json`.
+    - Updated `backend/main.py` to serve static files from `dashboard/build`.
+    - Modified frontend API calls in `dashboard/src/App.js`, `dashboard/src/Graph.js`, and `dashboard/src/Directory.js` to remove the `/api` prefix.
+- **Documentation:** Updated `README.md` and `docs/02_experimentations/02_02_dashboard_interactif.md` to reflect the new frontend/backend serving mechanism and simplified running instructions.
+- **Dependencies:** Added `fastapi`, `uvicorn`, and `watchfiles` to `requirements.txt` for the FastAPI backend.
+- **Build Process:** `src/build_graph.py` no longer generates static `directory_data.json` and `graph_data.json` files, as data is now dynamically served by the backend.
+
+### Fixed
+- **Frontend 504 Errors:** Resolved persistent 504 (Gateway Timeout) and JSON parsing errors in the frontend by directly serving the React build from the FastAPI backend, bypassing proxy issues.
+
 ## 0.2.1 - 2025-08-06
 
 ### Fixed

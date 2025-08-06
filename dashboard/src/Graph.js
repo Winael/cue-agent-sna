@@ -72,9 +72,19 @@ const GraphComponent = ({ height }) => {
       setSelectedEdge(null);
     };
 
-    fetch('/graph_data.json')
-      .then(response => response.json())
-      .then(data => {
+    const fetchData = async (retries = 5) => {
+      try {
+        const response = await fetch('/graph_data');
+        if (!response.ok) {
+          if (response.status === 503 && retries > 0) {
+            console.warn('Backend not ready, retrying graph data fetch...');
+            setTimeout(() => fetchData(retries - 1), 2000); // Retry after 2 seconds
+            return;
+          }
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+
         if (isCancelled) return;
 
         graph = new Graph(); // Assign to the outer scope graph
@@ -110,12 +120,14 @@ const GraphComponent = ({ height }) => {
         sigma.on('clickStage', handleClickStage);
 
         sigma.refresh();
-      })
-      .catch(error => {
+      } catch (error) {
         if (!isCancelled) {
           console.error('Error loading graph data:', error);
         }
-      });
+      }
+    };
+
+    fetchData();
 
     return () => {
       isCancelled = true;
