@@ -8,7 +8,7 @@ function Directory({ height }) {
   useEffect(() => {
     const fetchData = async (retries = 5) => {
       try {
-        const response = await fetch('/directory_data');
+        const response = await fetch('/api/directory_data');
         if (!response.ok) {
           if (response.status === 503 && retries > 0) {
             console.warn('Backend not ready, retrying directory data fetch...');
