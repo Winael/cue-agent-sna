@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.2.4 - 2025-08-07
+
+### Added
+- **Interactive SNA Queries:** Implemented a new SNA analysis panel in the dashboard.
+- **SNA Metrics:** Added backend API endpoints and frontend buttons for Degree, Betweenness, and Community detection analyses.
+- **Contextual Analysis:** SNA queries are now context-aware, focusing primarily on "Member" nodes to provide more relevant insights.
+- **Dynamic Visualization:** The graph now dynamically updates to show only the nodes and edges relevant to the performed analysis, with a "Reset" button to return to the full view.
+- **Analysis Results Panel:** A new panel displays key results and a description for each SNA metric, making the tool more educational.
+- **Tooltips:** Added tooltips to SNA buttons to explain the purpose of each analysis at a glance.
+
+### Changed
+- **Refactored Frontend:** Major refactoring of the `Graph.js` component to handle dynamic graph filtering, view resetting, and results display.
+- **Refactored Backend:** SNA endpoints in `backend/main.py` now accept a `node_type` parameter to filter the graph before analysis.
+
+### Fixed
+- **Community Analysis:** Fixed a bug where the community detection analysis was not correctly processed or visualized.
+- **Node Interactivity:** Re-implemented node click and drag-and-drop functionalities which were lost during a previous refactoring.
+- **API Path:** Corrected the API path for the directory data in the frontend.
+- **Python Imports:** Fixed `ModuleNotFoundError` in the backend by using relative imports within the `src` package.
+
 ## 0.2.3 - 2025-08-07
 
 ### Added

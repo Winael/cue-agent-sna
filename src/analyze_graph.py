@@ -1,7 +1,34 @@
 import networkx as nx
-import community as co # Import the community module
-from build_graph import build_graph
-from load_cue_model import load_model
+import community as co
+from .build_graph import build_graph
+from .load_cue_model import load_model
+
+def get_degree_centrality(G):
+    """Calculates degree centrality for all nodes."""
+    return nx.degree_centrality(G)
+
+def get_betweenness_centrality(G):
+    """Calculates betweenness centrality for all nodes."""
+    return nx.betweenness_centrality(G)
+
+def get_closeness_centrality(G):
+    """Calculates closeness centrality for all nodes."""
+    return nx.closeness_centrality(G)
+
+def get_pagerank(G):
+    """Calculates PageRank for all nodes."""
+    return nx.pagerank(G)
+
+def get_communities(G):
+    """Detects communities using the Louvain method."""
+    undirected_G = G.to_undirected()
+    partition = co.best_partition(undirected_G)
+    communities = {}
+    for node, comm_id in partition.items():
+        if comm_id not in communities:
+            communities[comm_id] = []
+        communities[comm_id].append(node)
+    return communities
 
 def analyze_graph(G):
     """Performs basic SNA on the graph and prints key metrics."""
@@ -22,40 +49,33 @@ def analyze_graph(G):
 
     # Degree Centrality
     print("\nDegree Centrality (top 5):")
-    degree_centrality = nx.degree_centrality(G)
+    degree_centrality = get_degree_centrality(G)
     sorted_degree = sorted(degree_centrality.items(), key=lambda item: item[1], reverse=True)
     for node, centrality in sorted_degree[:5]:
         print(f"  {node}: {centrality:.4f}")
 
     # Betweenness Centrality
     print("\nBetweenness Centrality (top 5):")
-    betweenness_centrality = nx.betweenness_centrality(G)
+    betweenness_centrality = get_betweenness_centrality(G)
     sorted_betweenness = sorted(betweenness_centrality.items(), key=lambda item: item[1], reverse=True)
     for node, centrality in sorted_betweenness[:5]:
         print(f"  {node}: {centrality:.4f}")
 
     # Closeness Centrality
     print("\nCloseness Centrality (top 5):")
-    closeness_centrality = nx.closeness_centrality(G)
+    closeness_centrality = get_closeness_centrality(G)
     sorted_closeness = sorted(closeness_centrality.items(), key=lambda item: item[1], reverse=True)
     for node, centrality in sorted_closeness[:5]:
         print(f"  {node}: {centrality:.4f}")
 
     # Average Clustering Coefficient
-    # Convert to undirected graph for clustering coefficient calculation
     undirected_G = G.to_undirected()
     avg_clustering = nx.average_clustering(undirected_G)
     print(f"\nAverage Clustering Coefficient: {avg_clustering:.4f}")
 
     # Community Detection (Louvain method)
     print("\nCommunity Detection (Louvain Method):")
-    partition = co.best_partition(undirected_G)
-    communities = {}
-    for node, comm_id in partition.items():
-        if comm_id not in communities:
-            communities[comm_id] = []
-        communities[comm_id].append(node)
-
+    communities = get_communities(G)
     for comm_id, nodes in communities.items():
         print(f"  Community {comm_id}: {nodes}")
 
@@ -73,7 +93,7 @@ def analyze_graph(G):
 
     # PageRank
     print("\nPageRank (top 5):")
-    pagerank = nx.pagerank(G)
+    pagerank = get_pagerank(G)
     sorted_pagerank = sorted(pagerank.items(), key=lambda item: item[1], reverse=True)
     for node, score in sorted_pagerank[:5]:
         print(f"  {node}: {score:.4f}")
