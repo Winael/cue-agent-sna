@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.2.3 - 2025-08-07
+
+### Added
+- **Dynamic CUE Data Reloading:** Implemented automatic reloading of graph data in the FastAPI backend when CUE files in the `cue/` directory are modified, using `watchfiles`.
+- **Explicit Member Relationships:** Added `pairedWith` and `mentors` fields to the `#Member` schema in `cue/types/schema.cue` and updated `src/build_graph.py` to process these explicit relationships, creating corresponding edges in the graph.
+
+### Changed
+- **Member Relationship Handling:** Modified `src/build_graph.py` to remove implicit "collaborates_with" edges between members of the same team, enforcing explicit relationship definitions.
+- **Documentation:** Updated `README.md` and `docs/02_experimentations/02_02_dashboard_interactif.md` to reflect the dynamic CUE data reloading and the new explicit member relationships.
+
+### Fixed
+- **Backend Reload Error:** Resolved `NameError: name 'asyncio' is not defined` in `backend/main.py` by ensuring `asyncio` is correctly imported and used for background tasks.
+
 ## 0.2.2 - 2025-08-07
 
 ### Changed

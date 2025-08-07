@@ -30,6 +30,8 @@ package types
     workload:  number & >=0 & <=1
     manager:   string | null // New field for manager's name
     team:     string
+    pairedWith?: [...string] // New field for members this person pairs with
+    mentors?: [...string] // New field for members this person mentors
 }
 
 #Artifact: {

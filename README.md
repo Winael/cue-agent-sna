@@ -47,13 +47,15 @@ Pour une compréhension approfondie du projet, des expérimentations menées et 
 
 ### 1. Modélisation de l'organisation avec CUE
 
-Le cœur de la modélisation organisationnelle se trouve dans le fichier `cue/model.cue`. Ce fichier définit la structure de l'organisation, incluant les chaînes de valeur, portefeuilles, trains SAFe, équipes, membres, artefacts, rituels et OKRs.
+Le cœur de la modélisation organisationnelle se trouve dans le fichier `cue/model.cue`. Ce fichier définit la structure de l'organisation, incluant les chaînes de valeur, portefeuilles, trains SAFe, équipes, membres, artefacts, rituels et OKRs. Les relations entre les membres (manager, paires, mentors) sont désormais définies explicitement dans les données des membres.
 
 Pour valider le modèle CUE et visualiser sa structure en JSON :
 
 ```bash
 cue eval cue/model.cue
 ```
+
+**Mise à jour Dynamique :** Le backend surveille automatiquement les modifications dans le répertoire `cue/`. Toute modification des fichiers CUE déclenchera un rechargement automatique du graphe dans le backend, et les changements seront visibles dans l'application sans redémarrage manuel.
 
 ### 2. Génération et Visualisation du Graphe d'Organisation
 

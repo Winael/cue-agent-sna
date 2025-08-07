@@ -58,7 +58,6 @@ def build_graph(model):
         team_name = team.get("name")
         G.add_node(team_name, type="Team")
 
-        member_names_in_team = team.get("memberNames", [])
         artifact_names_in_team = team.get("artifactNames", [])
         okr_names_in_team = team.get("okrNames", [])
 
@@ -66,10 +65,6 @@ def build_graph(model):
         train_name = team.get("train", {}).get("name")
         if train_name and G.has_node(train_name):
             G.add_edge(team_name, train_name, relation="belongs_to")
-
-        # Add edges between team and its members
-        for member_name in member_names_in_team:
-            G.add_edge(team_name, member_name, relation="belongs_to")
 
         # Add edges between team and its artifacts
         for artifact_name in artifact_names_in_team:
@@ -80,19 +75,31 @@ def build_graph(model):
             if okr_name in all_okrs:
                 G.add_edge(team_name, okr_name, relation="owns_okr")
 
-        # Add edges between all members of the team (undirected for collaboration)
-        for i in range(len(member_names_in_team)):
-            for j in range(i + 1, len(member_names_in_team)):
-                # Ensure we don't add duplicate edges if already added by manager relationship
-                if not G.has_edge(member_names_in_team[i], member_names_in_team[j]) and \
-                   not G.has_edge(member_names_in_team[j], member_names_in_team[i]):
-                    G.add_edge(member_names_in_team[i], member_names_in_team[j], relation="collaborates_with")
+    # Add edges between members and their teams
+    team_members = {team.get("name"): [] for team in teams}
+    for member_name, member_data in all_members.items():
+        team_name = member_data.get("team")
+        if team_name and G.has_node(team_name):
+            G.add_edge(member_name, team_name, relation="belongs_to")
+            team_members[team_name].append(member_name)
 
     # Add manager relationships (directed edges)
     for member_name, member_data in all_members.items():
         manager_name = member_data.get("manager")
         if manager_name and manager_name in all_members:
             G.add_edge(manager_name, member_name, relation="manages")
+
+    # Add explicit pairedWith relationships
+    for member_name, member_data in all_members.items():
+        for paired_member_name in member_data.get("pairedWith", []):
+            if paired_member_name in all_members:
+                G.add_edge(member_name, paired_member_name, relation="pairs_with")
+
+    # Add explicit mentors relationships
+    for member_name, member_data in all_members.items():
+        for mentored_member_name in member_data.get("mentors", []):
+            if mentored_member_name in all_members:
+                G.add_edge(member_name, mentored_member_name, relation="mentors")
 
     # Add artifact dependencies (directed edges)
     for artifact_name, artifact_data in all_artifacts.items():

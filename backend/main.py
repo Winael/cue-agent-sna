@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from src.load_cue_model import load_model
 from src.build_graph import build_graph
 import networkx as nx
+import asyncio
+from watchfiles import awatch
 
 app = FastAPI()
 
@@ -13,16 +15,25 @@ cached_pos = None
 
 async def load_and_cache_graph_data():
     global cached_graph, cached_pos
+    print("Loading and caching graph data...")
     model = load_model()
     if model:
         cached_graph = build_graph(model)
         cached_pos = nx.spring_layout(cached_graph, k=0.5, iterations=50)
+        print("Graph data loaded and cached.")
     else:
-        pass
+        print("Failed to load CUE model.")
+
+async def watch_cue_files():
+    print("Starting CUE file watcher...")
+    async for changes in awatch('./cue', recursive=True):
+        print(f"Detected changes in CUE files: {changes}. Reloading graph data...")
+        await load_and_cache_graph_data()
 
 @app.on_event("startup")
 async def startup_event():
     await load_and_cache_graph_data()
+    asyncio.create_task(watch_cue_files())
 
 @app.get("/api/hello")
 async def read_root():
