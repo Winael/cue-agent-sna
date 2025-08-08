@@ -17,7 +17,7 @@ Les activités suivantes, réalisées dans le cadre de ce projet, sont éligible
 *   **Conception et développement de modèles déclaratifs :** La création et l'affinage des modèles CUE pour représenter les entités et relations organisationnelles.
 *   **Développement d'algorithmes d'analyse de graphe :** L'implémentation et l'optimisation des méthodes d'analyse de réseau social (SNA) via NetworkX pour extraire des insights des modèles organisationnels.
 *   **Recherche et développement d'architectures d'agents IA :** La conception, l'expérimentation et l'optimisation des architectures d'agents basées sur LangGraph et les LLM pour la simulation et la proposition de changements organisationnels.
-*   **Développement d'interfaces de visualisation innovantes :** La création du dashboard interactif pour l'exploration du graphe, impliquant la résolution de verrous technologiques liés à l'intégration de bibliothèques de rendu complexes (Sigma.js).
+*   **Développement d'interfaces de visualisation innovantes :** La création du dashboard interactif pour l'exploration du graphe, impliquant la résolution de verrous technologiques liés à l'intégration de bibliothèques de rendu complexes (Sigma.js) et à l'implémentation de fonctionnalités d'analyse avancées (vue de voisinage, calcul de chemin le plus court).
 *   **Veille technologique et bibliographique :** L'étude des dernières avancées en CUElang, SNA, LangGraph, LLM et leurs applications à la modélisation organisationnelle.
 
 ## Justification des Dépenses
