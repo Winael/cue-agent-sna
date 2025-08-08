@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.2.5 - 2025-08-08
+
+### Added
+- **Member-Centric Analysis:** Implemented new features for in-depth analysis of individual members in the graph.
+- **Isolate Member View:** Added a button to isolate a selected member and their direct relationships, creating a focused subgraph view.
+- **Shortest Path Analysis:** Implemented a feature to find and display the shortest path between two selected members.
+- **Ranked Neighbors:** Added a feature to rank the neighbors of a selected member by their degree centrality.
+
+### Changed
+- **Backend API:** Added new endpoints in `backend/main.py` to support the new member-centric analysis features:
+    - `/api/member_subgraph/{member_id}`
+    - `/api/sna/shortest_path`
+    - `/api/sna/ranked_neighbors`
+- **Frontend Interaction:** Major updates to `dashboard/src/Graph.js` to handle the new interaction modes (selecting nodes for path analysis, displaying subgraphs) and to call the new API endpoints.
+- **Documentation:** 
+    - Updated `docs/02_experimentations/02_02_dashboard_interactif.md` to document the new member-centric analysis features.
+    - Updated `docs/04_credit_impot_recherche.md` to include the new advanced visualization features as part of the R&D activities.
+
+### Fixed
+- **Node Dragging:** Fixed a bug where dragging a node would also pan the entire graph, by using `e.preventSigmaDefault()` in the event handler.
+
 ## 0.2.4 - 2025-08-07
 
 ### Added

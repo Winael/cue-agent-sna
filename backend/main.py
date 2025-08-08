@@ -155,6 +155,87 @@ async def get_node_types():
     types = set(data.get("type") for _, data in cached_graph.nodes(data=True) if data.get("type"))
     return JSONResponse(content=sorted(list(types)))
 
+@app.get("/api/member_subgraph/{member_id}")
+async def get_member_subgraph(member_id: str):
+    global cached_graph, cached_pos
+    if cached_graph is None or cached_pos is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet. Please try again in a moment.")
+    if not cached_graph.has_node(member_id):
+        raise HTTPException(status_code=404, detail=f"Node {member_id} not found.")
+
+    try:
+        # Get the neighbors of the selected node
+        neighbors = list(cached_graph.neighbors(member_id))
+        subgraph_nodes = neighbors + [member_id]
+        subgraph = cached_graph.subgraph(subgraph_nodes)
+
+        nodes = []
+        edges = []
+
+        for node_id in subgraph.nodes():
+            node_data = subgraph.nodes[node_id]
+            x, y = cached_pos[node_id]
+            nodes.append({
+                "id": node_id,
+                "label": node_id,
+                "x": float(x),
+                "y": float(y),
+                "size": 10,
+                "color": node_data.get("color", "#999"),
+                "attributes": node_data
+            })
+
+        for i, (source, target, edge_data) in enumerate(subgraph.edges(data=True)):
+            edges.append({
+                "id": f"e{i}",
+                "source": source,
+                "target": target,
+                "label": edge_data.get("relation", ""),
+                "type": "arrow",
+                "attributes": edge_data
+            })
+
+        graph_data = {"nodes": nodes, "edges": edges}
+        return JSONResponse(content=graph_data)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading subgraph data: {e}")
+
+@app.get("/api/sna/shortest_path")
+async def get_shortest_path(source: str, target: str):
+    if cached_graph is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet.")
+    try:
+        path = nx.shortest_path(cached_graph, source=source, target=target)
+        return JSONResponse(content=path)
+    except nx.NetworkXNoPath:
+        print(f"No path found between {source} and {target}. This means the nodes exist but are in disconnected components.")
+        raise HTTPException(status_code=404, detail=f"Le noeud {source} n'est pas connecté avec {target}.")
+    except nx.NodeNotFound as e:
+        print(f"Node not found in shortest_path. Available nodes: {list(cached_graph.nodes())}")
+        raise HTTPException(status_code=404, detail=str(e))
+
+@app.get("/api/sna/ranked_neighbors")
+async def get_ranked_neighbors(node_id: str):
+    if cached_graph is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet.")
+    if not cached_graph.has_node(node_id):
+        print(f"Node {node_id} not found in graph. Available nodes: {list(cached_graph.nodes())}")
+        raise HTTPException(status_code=404, detail=f"Node {node_id} not found.")
+        
+    neighbors = list(nx.all_neighbors(cached_graph, node_id))
+    if not neighbors:
+        return JSONResponse(content={})
+
+    subgraph = cached_graph.subgraph(neighbors + [node_id])
+    centrality = nx.degree_centrality(subgraph)
+    
+    ranked_neighbors = sorted(
+        {neighbor: centrality[neighbor] for neighbor in neighbors}.items(),
+        key=lambda item: item[1],
+        reverse=True
+    )
+    return JSONResponse(content=dict(ranked_neighbors))
+
 
 # Mount the static files for the frontend
 app.mount("/", StaticFiles(directory="dashboard/build", html=True), name="static")

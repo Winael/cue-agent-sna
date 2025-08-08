@@ -37,6 +37,14 @@ Pour passer d'une approche basée sur des fichiers JSON statiques à une gestion
 ### 3.3. Ajout de l'Annuaire des Membres
 En complément de la visualisation graphique, un onglet "Annuaire" a été ajouté au dashboard. Cet onglet permet de consulter une liste détaillée des membres de l'organisation, avec leurs attributs (rôle, équipe, compétences, etc.). Cette fonctionnalité offre une vue tabulaire et facilement consultable des données organisationnelles.
 
+### 3.4. Vue Membre et Analyse de Voisinage
+- **Problématique :** Comment permettre une analyse fine des relations d'un membre spécifique ?
+- **Expérimentation :** De nouvelles routes API ont été ajoutées au backend (`/api/member_subgraph/{member_id}`, `/api/sna/shortest_path`, `/api/sna/ranked_neighbors`) pour fournir des données ciblées sur un membre.
+- **Solution :** Le frontend a été enrichi pour exploiter ces nouvelles routes :
+    - **Vue isolée :** En cliquant sur un membre, un bouton "Isoler les relations directes" permet de n'afficher que ce membre et ses voisins immédiats.
+    - **Chemin le plus court :** Un autre bouton permet de sélectionner un second membre et de visualiser le chemin le plus court entre eux dans le graphe.
+    - **Analyse des voisins :** Une fonctionnalité permet de classer les voisins d'un membre par ordre de centralité, offrant un aperçu rapide des relations les plus importantes.
+
 ## 4. Connaissances Acquises
 
 Ces travaux ont permis d'acquérir une connaissance approfondie des points suivants :
