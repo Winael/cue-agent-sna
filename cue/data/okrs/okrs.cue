@@ -4,36 +4,36 @@ import "github.com/winael/cue-agent-sna/cue/types"
 
 okrs: [name=string]: types.#OKR // New section for all OKRs
 okrs: {
-    Portfolio_OKR_1: types.#OKR & {
-        objective: "Increase customer satisfaction for Digital Transformation portfolio"
+    GP_OKR_1: types.#OKR & {
+        objective: "Increase customer satisfaction for Grand Public portfolio"
         keyResults: [
             "Achieve 90% CSAT score for key products",
             "Reduce customer support tickets by 20%"
         ]
-        owner: "Digital Transformation"
+        owner: "Grand Public"
     }
-    ART_OKR_1: types.#OKR & {
-        objective: "Accelerate feature delivery for ART 1"
+    DE_OKR_1: types.#OKR & {
+        objective: "Accelerate feature delivery for Digital Experience"
         keyResults: [
             "Decrease average lead time by 15%",
             "Increase release frequency to bi-weekly"
         ]
-        owner: "Agile Release Train 1"
+        owner: "Digital Experience"
     }
-    Phoenix_OKR_1: types.#OKR & {
+    Alpha_OKR_1: types.#OKR & {
         objective: "Improve UserService reliability"
         keyResults: [
             "Achieve 99.9% uptime for UserService",
             "Reduce critical bugs in UserService by 50%"
         ]
-        owner: "Team Phoenix"
+        owner: "Team Alpha"
     }
-    Titan_OKR_1: types.#OKR & {
+    Delta_OKR_1: types.#OKR & {
         objective: "Enhance WebApp performance"
         keyResults: [
             "Reduce page load time by 2 seconds",
             "Improve Lighthouse score to 90+"
         ]
-        owner: "Team Titan"
+        owner: "Team Delta"
     }
 }
