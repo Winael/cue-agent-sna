@@ -39,7 +39,7 @@ const snaMetricDescriptions = {
   }
 };
 
-const GraphComponent = ({ height }) => {
+const GraphComponent = ({ height, filters }) => {
   const containerRef = useRef(null);
   const sigmaInstanceRef = useRef(null);
   const [originalGraphData, setOriginalGraphData] = useState(null);
@@ -342,6 +342,50 @@ const GraphComponent = ({ height }) => {
       }
     };
   }, [containerRef, originalGraphData]); // Only re-runs if container or originalGraphData changes
+
+  useEffect(() => {
+    if (!sigmaInstanceRef.current || !originalGraphData) return;
+
+    const graph = sigmaInstanceRef.current.getGraph();
+    const isFilterActive = Object.values(filters).some(f => f.length > 0);
+
+    if (!isFilterActive) {
+      // No filters active, make all nodes visible and restore original colors
+      graph.forEachNode(node => {
+        const originalColor = nodeTypeColors[graph.getNodeAttribute(node, 'attributes').type] || '#999';
+        graph.setNodeAttribute(node, 'hidden', false);
+        graph.setNodeAttribute(node, 'color', originalColor);
+      });
+      sigmaInstanceRef.current.refresh();
+      return;
+    }
+
+    graph.forEachNode((node, attributes) => {
+      if (attributes.attributes.type !== 'Member') {
+        // For now, only filter members. Non-member nodes are always visible.
+        // You might want to adjust this logic based on your needs.
+        graph.setNodeAttribute(node, 'hidden', false);
+        return;
+      }
+
+      const member = attributes.attributes;
+      const match =
+        (filters.roles.length === 0 || filters.roles.includes(member.role)) &&
+        (filters.locations.length === 0 || filters.locations.includes(member.location)) &&
+        (filters.contracts.length === 0 || filters.contracts.includes(member.contract)) &&
+        (filters.skills.length === 0 || filters.skills.some(skill => member.skills.includes(skill))) &&
+        (filters.languages.length === 0 || filters.languages.some(lang => member.language.includes(lang)));
+
+      if (match) {
+        graph.setNodeAttribute(node, 'hidden', false);
+        graph.setNodeAttribute(node, 'color', nodeTypeColors[member.type] || '#999');
+      } else {
+        graph.setNodeAttribute(node, 'hidden', true);
+      }
+    });
+
+    sigmaInstanceRef.current.refresh();
+  }, [filters, originalGraphData]);
 
   return (
     <div style={{ position: 'relative', width: '100%', height: height }}>

@@ -4,13 +4,44 @@
   height: 100vh; /* Ensure the App takes full viewport height */
 }
 
-main {
-  flex: 1; /* Allow main to take up remaining space */
-  display: flex; /* Use flexbox for main content */
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden; /* Prevent scrolling on the container */
+}
+
+.filter-bar {
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto; /* Add scroll if content overflows */
-  height: 100%; /* Ensure main has a concrete height */
+  overflow-x: auto; /* Allow horizontal scrolling */
+  height: 60px; /* Added fixed height for visibility */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.filter-group {
+  display: inline-flex;
+  align-items: center;
+  margin-inline: 15px;
+}
+
+.filter-group h5 {
+  margin: 0;
+  font-size: 0.9em;
+  color: #555;
+  margin-right: 10px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: auto;
+  height: 100%;
 }
 
 .App-header {
