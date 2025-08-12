@@ -12,6 +12,7 @@ const nodeTypeColors = {
   'PI Planning': '#FFC300',
   OKR: '#C70039',
   Team: '#900C3F',
+  CommunityOfPractice: '#1ABC9C',
   ValueChain: '#F1C40F',
   Portfolio: '#E67E22',
   SAFeTrain: '#E74C3C'
@@ -73,7 +74,13 @@ const GraphComponent = ({ height }) => {
     });
     data.edges.forEach(edge => {
       if (graph.hasNode(edge.source) && graph.hasNode(edge.target)) {
-        graph.addEdgeWithKey(edge.id, edge.source, edge.target, { ...edge, color: edge.relation === 'belongs_to' ? '#FF5733' : '#ccc' });
+        let edgeColor = '#ccc'; // Default color
+        if (edge.label === 'belongs_to') {
+          edgeColor = '#FF5733';
+        } else if (edge.label && edge.label.startsWith('community_')) {
+          edgeColor = '#007bff'; // A distinct color for community relations
+        }
+        graph.addEdgeWithKey(edge.id, edge.source, edge.target, { ...edge, color: edgeColor });
       }
     });
     console.log("loadGraph: Graph loaded. Node count:", graph.order, "Edge count:", graph.size);

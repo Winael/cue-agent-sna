@@ -13,6 +13,7 @@ def build_graph(model):
     all_artifacts = org_data.get("artifacts", {})
     all_rituals = org_data.get("rituals", {})
     all_okrs = org_data.get("okrs", {})
+    all_communities = org_data.get("communities", {})
     value_chains = org_data.get("valueChains", [])
     portfolios = org_data.get("portfolios", [])
     trains = org_data.get("trains", [])
@@ -37,6 +38,22 @@ def build_graph(model):
         portfolio_name = train.get("portfolio", {}).get("name")
         if portfolio_name and G.has_node(portfolio_name):
             G.add_edge(train_name, portfolio_name, relation="part_of")
+
+    # Add all communities of practice
+    for community_name, community_data in all_communities.items():
+        G.add_node(community_name, type="CommunityOfPractice", **community_data)
+        
+        # Add internal relations within the community
+        for relation_data in community_data.get("communityRelations", []):
+            source_member = relation_data.get("source")
+            target_member = relation_data.get("target")
+            relation_type = relation_data.get("type")
+            
+            if source_member in all_members and target_member in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k not in ['source', 'target', 'type']}
+                attributes['relation'] = f"community_{relation_type}"
+                attributes['community'] = community_name # Add community context to the edge
+                G.add_edge(source_member, target_member, **attributes)
 
     # Add all members first to ensure they exist before adding manager edges
     for member_name, member_data in all_members.items():
@@ -75,13 +92,17 @@ def build_graph(model):
             if okr_name in all_okrs:
                 G.add_edge(team_name, okr_name, relation="owns_okr")
 
-    # Add edges between members and their teams
+    # Add edges between members and their teams and communities
     team_members = {team.get("name"): [] for team in teams}
     for member_name, member_data in all_members.items():
         team_name = member_data.get("team")
         if team_name and G.has_node(team_name):
             G.add_edge(member_name, team_name, relation="belongs_to")
             team_members[team_name].append(member_name)
+        
+        for community_name in member_data.get("communities", []):
+            if community_name in all_communities:
+                G.add_edge(member_name, community_name, relation="part_of_community")
 
     # Add manager relationships (directed edges)
     for member_name, member_data in all_members.items():
@@ -91,15 +112,48 @@ def build_graph(model):
 
     # Add explicit pairedWith relationships
     for member_name, member_data in all_members.items():
-        for paired_member_name in member_data.get("pairedWith", []):
-            if paired_member_name in all_members:
-                G.add_edge(member_name, paired_member_name, relation="pairs_with")
+        for relation_data in member_data.get("pairedWith", []):
+            target_name = relation_data.get("target")
+            if target_name in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k != 'target'}
+                attributes['relation'] = 'pairs_with'
+                G.add_edge(member_name, target_name, **attributes)
 
     # Add explicit mentors relationships
     for member_name, member_data in all_members.items():
-        for mentored_member_name in member_data.get("mentors", []):
-            if mentored_member_name in all_members:
-                G.add_edge(member_name, mentored_member_name, relation="mentors")
+        for relation_data in member_data.get("mentors", []):
+            target_name = relation_data.get("target")
+            if target_name in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k != 'target'}
+                attributes['relation'] = 'mentors'
+                G.add_edge(member_name, target_name, **attributes)
+
+    # Add explicit askAdviceFrom relationships
+    for member_name, member_data in all_members.items():
+        for relation_data in member_data.get("askAdviceFrom", []):
+            target_name = relation_data.get("target")
+            if target_name in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k != 'target'}
+                attributes['relation'] = 'asks_advice_from'
+                G.add_edge(member_name, target_name, **attributes)
+
+    # Add explicit talksTo relationships
+    for member_name, member_data in all_members.items():
+        for relation_data in member_data.get("talksTo", []):
+            target_name = relation_data.get("target")
+            if target_name in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k != 'target'}
+                attributes['relation'] = 'talks_to'
+                G.add_edge(member_name, target_name, **attributes)
+
+    # Add explicit blockedBy relationships
+    for member_name, member_data in all_members.items():
+        for relation_data in member_data.get("blockedBy", []):
+            target_name = relation_data.get("target")
+            if target_name in all_members:
+                attributes = {k: v for k, v in relation_data.items() if k != 'target'}
+                attributes['relation'] = 'blocked_by'
+                G.add_edge(member_name, target_name, **attributes)
 
     # Add artifact dependencies (directed edges)
     for artifact_name, artifact_data in all_artifacts.items():

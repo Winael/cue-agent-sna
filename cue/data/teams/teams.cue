@@ -4,27 +4,68 @@ import "github.com/winael/cue-agent-sna/cue/types"
 
 teams: [
     types.#Team & {
-        name:  "Team Phoenix"
+        name: "Team Alpha"
+        type: "Scrum UI" 
         train: types.#SAFeTrain & {
-            name:      "Agile Release Train 1"
+            name:      "Digital Experience"
             portfolio: types.#Portfolio & {
-                name:       "Digital Transformation"
-                valueChain: types.#ValueChain & {name: "Product Development"}
+                name:       "Grand Public"
+                valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: ["UserService", "OrderService"] // Team Phoenix owns these artifacts
-        okrNames: ["Phoenix_OKR_1"]
+        artifactNames: [] // Team Alpha owns these artifacts
+        okrNames: []
     },
     types.#Team & {
-        name:  "Team Titan"
+        name: "Team Delta"
+        type: "Composant API"
         train: types.#SAFeTrain & {
-            name:      "Agile Release Train 1"
+            name:      "Digital Experience"
             portfolio: types.#Portfolio & {
-                name:       "Digital Transformation"
-                valueChain: types.#ValueChain & {name: "Product Development"}
+                name:       "Grand Public"
+                valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: ["PaymentService", "WebApp", "SharedLibrary"] // Team Titan owns these artifacts
-        okrNames: ["Titan_OKR_1"]
+        artifactNames: [] // Team Titan owns these artifacts
+        okrNames: []
+    },
+    types.#Team & {
+        name: "Team Gamma"
+        type: "Exploratoire / Interco"
+        train: types.#SAFeTrain & {
+            name:      "Digital Experience"
+            portfolio: types.#Portfolio & {
+                name:       "Grand Public"
+                valueChain: types.#ValueChain & {name: "Services Numériques"}
+            }
+        }
+        artifactNames: [] // Team Titan owns these artifacts
+        okrNames: []
+    },
+    types.#Team & {
+        name: "Team Omega"
+        type: "Intégration"
+        train: types.#SAFeTrain & {
+            name:      "Digital Experience"
+            portfolio: types.#Portfolio & {
+                name:       "Grand Public"
+                valueChain: types.#ValueChain & {name: "Services Numériques"}
+            }
+        }
+        artifactNames: [] // Team Titan owns these artifacts
+        okrNames: []
+    },
+    types.#Team & {
+        name: "Team Sigma"
+        type: "Platform Team"
+        train: types.#SAFeTrain & {
+            name:      "Digital Experience"
+            portfolio: types.#Portfolio & {
+                name:       "Grand Public"
+                valueChain: types.#ValueChain & {name: "Services Numériques"}
+            }
+        }
+        artifactNames: [] // Team Titan owns these artifacts
+        okrNames: []
     },
 ]

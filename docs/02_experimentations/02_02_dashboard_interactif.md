@@ -18,6 +18,10 @@ Le développement de ce dashboard a nécessité de surmonter plusieurs verrous t
 - **Problématique :** Le clic sur les arêtes et le glisser-déposer des nœuds n'étaient pas fonctionnels par défaut.
 - **Solution :** Activation du paramètre `enableEdgeEvents` et implémentation d'une logique spécifique pour gérer les états `downNode`, `draggedNode` et `mouseup`, en mappant les coordonnées de la souris pour permettre une manipulation fluide.
 
+### 2.3. Correction de bugs de rendu
+- **Problématique :** Le graphe ne s'affichait plus suite à une mise à jour du backend.
+- **Solution :** L'erreur provenait d'une incohérence entre les données envoyées par le backend et celles attendues par le frontend. La propriété contenant la relation d'un lien (edge) était nommée `label` dans le JSON du backend, mais le frontend tentait d'accéder à `edge.relation`. La correction du code frontend pour utiliser `edge.label` a résolu le problème de rendu.
+
 ## 3. Intégration du Backend et des Fonctionnalités d'Analyse
 
 ### 3.1. Intégration du Backend FastAPI

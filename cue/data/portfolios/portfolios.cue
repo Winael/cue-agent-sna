@@ -4,8 +4,8 @@ import "github.com/winael/cue-agent-sna/cue/types"
 
 portfolios: [
     types.#Portfolio & {
-        name:       "Digital Transformation"
-        valueChain: types.#ValueChain & {name: "Product Development"}
-        okrNames: ["Portfolio_OKR_1"]
+        name:       "Grand Public"
+        valueChain: types.#ValueChain & {name: "Services Numériques"}
+        okrNames: ["GP_OKR_1"]
     },
 ]

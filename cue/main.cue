@@ -6,6 +6,7 @@ import "github.com/winael/cue-agent-sna/cue/data/artifacts"
 import "github.com/winael/cue-agent-sna/cue/data/rituals"
 import "github.com/winael/cue-agent-sna/cue/data/okrs"
 import "github.com/winael/cue-agent-sna/cue/data/teams"
+import "github.com/winael/cue-agent-sna/cue/data/communities"
 
 let allValueChains = valuechains.valueChains
 let allPortfolios = portfolios.portfolios
@@ -15,6 +16,7 @@ let allArtifacts = artifacts.artifacts
 let allRituals = rituals.rituals
 let allOkrs = okrs.okrs
 let allTeams = teams.teams
+let allCommunities = communities.communities
 
 myOrg: {
     valueChains: allValueChains
@@ -25,6 +27,7 @@ myOrg: {
     rituals: allRituals
     okrs: allOkrs
     teams: allTeams
+    communities: allCommunities
 }
 
 members_directory: [
