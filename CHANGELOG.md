@@ -1,5 +1,33 @@
 # Changelog
 
+## 0.3.1 - 2025-08-12
+
+### Added
+- **Interactive Filter System:** Implemented a new filter system for members in both graph and directory views, allowing filtering by roles, locations, skills, contracts, and languages.
+
+### Changed
+- **Filter UI:** Updated filter user interface to use multi-select dropdowns (`react-select`) for improved user experience.
+- **Filter Layout:** Adjusted filter bar layout for horizontal display with scrolling.
+
+### Fixed
+- **Filter Dropdown Display:** Resolved z-index issue causing filter dropdowns to appear behind the graph.
+
+## 0.3.0 - 2025-08-12
+
+### Added
+- **Communities of Practice:** Introduced new CUE schemas (`#CommunityOfPractice`, `#CommunityRelation`, `#Relation`) to formally model communities and detailed interpersonal relationships (mentoring, collaboration, etc.).
+
+### Changed
+- **CUE Model Refactoring:** Overhauled the entire CUE model for greater clarity and detail. This includes:
+    - Adding new fields to the `#Member` schema (e.g., `contract`, `tenureMonths`, `location`, `active`).
+    - Enhancing relationship definitions to be more expressive.
+- **Graph Building Logic:** Updated `src/build_graph.py` to be compatible with the new, more detailed CUE model structure.
+- **CUE Data Loading:** Switched from `cue export` to `cue eval` in `src/load_cue_model.py` for more robust and comprehensive data evaluation.
+- **Documentation:** Updated `docs/02_experimentations/02_01_modele_organisationnel.md` and `docs/04_credit_impot_recherche.md` to reflect the new CUE model and its R&D implications.
+
+### Fixed
+- **Graph Rendering:** Fixed a critical bug in `dashboard/src/Graph.js` that prevented the graph from rendering due to an incorrect property access (`edge.relation` instead of `edge.label`).
+
 ## 0.2.5 - 2025-08-08
 
 ### Added

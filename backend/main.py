@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from src.load_cue_model import load_model
@@ -7,7 +7,7 @@ import src.analyze_graph as sna
 import networkx as nx
 import asyncio
 from watchfiles import awatch
-from typing import Optional
+from typing import Optional, List
 
 app = FastAPI()
 
@@ -87,16 +87,33 @@ async def get_graph_data():
         raise HTTPException(status_code=500, detail=f"Error loading graph data: {e}")
 
 @app.get("/api/directory_data")
-async def get_directory_data():
+async def get_directory_data(
+    roles: Optional[List[str]] = Query(None),
+    locations: Optional[List[str]] = Query(None),
+    skills: Optional[List[str]] = Query(None),
+    contracts: Optional[List[str]] = Query(None),
+    languages: Optional[List[str]] = Query(None),
+):
     global cached_graph
     if cached_graph is None:
         raise HTTPException(status_code=503, detail="Directory data not loaded yet. Please try again in a moment.")
 
     try:
         members = []
-        for node_id in cached_graph.nodes():
-            node_data = cached_graph.nodes[node_id]
+        for node_id, node_data in cached_graph.nodes(data=True):
             if node_data.get("type") == "Member":
+                # Filtering logic
+                if roles and node_data.get("role") not in roles:
+                    continue
+                if locations and node_data.get("location") not in locations:
+                    continue
+                if contracts and node_data.get("contract") not in contracts:
+                    continue
+                if skills and not set(node_data.get("skills", [])).intersection(set(skills)):
+                    continue
+                if languages and not set(node_data.get("language", [])).intersection(set(languages)):
+                    continue
+                
                 members.append({
                     "id": node_id,
                     "attributes": node_data
@@ -109,6 +126,41 @@ async def get_directory_data():
 async def reload_graph():
     asyncio.create_task(load_and_cache_graph_data())
     return {"message": "Graph reload initiated in background."}
+
+@app.get("/api/filter_options")
+async def get_filter_options():
+    if cached_graph is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet.")
+
+    try:
+        roles = set()
+        locations = set()
+        skills = set()
+        contracts = set()
+        languages = set()
+
+        for node_id, node_data in cached_graph.nodes(data=True):
+            if node_data.get("type") == "Member":
+                if "role" in node_data:
+                    roles.add(node_data["role"])
+                if "location" in node_data:
+                    locations.add(node_data["location"])
+                if "skills" in node_data:
+                    skills.update(node_data["skills"])
+                if "contract" in node_data:
+                    contracts.add(node_data["contract"])
+                if "language" in node_data:
+                    languages.update(node_data["language"])
+
+        return JSONResponse(content={
+            "roles": sorted(list(roles)),
+            "locations": sorted(list(locations)),
+            "skills": sorted(list(skills)),
+            "contracts": sorted(list(contracts)),
+            "languages": sorted(list(languages)),
+        })
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error getting filter options: {e}")
 
 # SNA Endpoints
 @app.get("/api/sna/degree_centrality")

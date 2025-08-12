@@ -1,6 +1,6 @@
 # Modèle d'Organisation Actuel
 
-Ce document décrit l'organisation telle que modélisée dans le fichier `cue/model.cue`.
+Ce document décrit l'organisation telle que modélisée dans les fichiers CUE du répertoire `cue/`.
 
 Le modèle est structuré de manière hiérarchique et inclut les entités suivantes :
 
@@ -31,6 +31,7 @@ Une équipe de développement agile. Chaque équipe appartient à un `#SAFeTrain
 
 - **Attributs :**
     - `name`: Nom de l'équipe (ex: "Team Phoenix").
+    - `type`: Type d'équipe (ex: "feature team", "platform team").
     - `train`: Référence au train SAFe auquel elle appartient.
     - `memberNames`: Liste des noms des membres de l'équipe.
     - `artifactNames`: Liste des noms des artefacts dont l'équipe est propriétaire.
@@ -43,9 +44,23 @@ Représente un individu au sein de l'organisation.
     - `name`: Nom du membre (ex: "Alice").
     - `role`: Rôle du membre (ex: "Product Owner", "Developer").
     - `skills`: Liste des compétences du membre.
-    - `seniority`: Niveau de séniorité ("Junior", "Mid", "Senior").
+    - `seniority`: Niveau de séniorité (entier de 1 à 3).
     - `workload`: Charge de travail (nombre entre 0 et 1).
     - `manager`: Nom du manager direct du membre (peut être `null`).
+    - `contract`: Type de contrat ("CDI", "ESN", "Freelance").
+    - `available`: Disponibilité du membre.
+    - `tenureMonths`: Ancienneté en mois.
+    - `location`: Lieu de travail.
+    - `language`: Langues parlées.
+    - `active`: Statut du membre.
+    - `team`: Nom de l'équipe à laquelle le membre appartient.
+    - `communities`: Liste des communautés de pratique auxquelles le membre participe.
+    - `pairedWith`: Liste de relations de pair-programming.
+    - `mentors`: Liste de relations de mentorat.
+    - `blockedBy`: Liste de relations de blocage.
+    - `askAdviceFrom`: Liste de relations de demande de conseil.
+    - `talksTo`: Liste de relations de communication.
+
 
 ## 6. Artefact (`#Artifact`)
 Représente un livrable technique (service, application, bibliothèque).
@@ -72,6 +87,31 @@ Représente un Objectif et ses Key Results associés.
     - `keyResults`: Liste des résultats clés mesurables.
     - `owner`: Nom de l'entité (Portefeuille, Train SAFe, Équipe) propriétaire de cet OKR.
 
+## 9. Communauté de Pratique (`#CommunityOfPractice`)
+Un groupe de personnes qui partagent un intérêt pour un sujet.
+
+- **Attributs :**
+    - `name`: Nom de la communauté.
+    - `topic`: Sujet de la communauté.
+    - `facilitator`: Nom du facilitateur.
+    - `communityRelations`: Liste des relations spécifiques à la communauté.
+
+## 10. Relation (`#Relation` et `#CommunityRelation`)
+Définit une relation entre deux membres. `#CommunityRelation` est une spécialisation pour les relations au sein d'une communauté.
+
+- **Attributs (`#Relation`):**
+    - `target`: Cible de la relation.
+    - `weight`: Poids de la relation (0 à 1).
+    - `startDate`: Date de début de la relation.
+    - `channel`: Canal de communication.
+    - `context`: Contexte de la relation.
+- **Attributs (`#CommunityRelation`):**
+    - `source`: Source de la relation.
+    - `target`: Cible de la relation.
+    - `type`: Type de relation ("mentors", "collaborates", etc.).
+    - `context`: Contexte spécifique à la communauté.
+
+
 ## Relations Modélisées
 
 Le modèle CUE établit des relations claires entre ces entités :
@@ -79,6 +119,8 @@ Le modèle CUE établit des relations claires entre ces entités :
 - Un `SAFeTrain` appartient à un `Portfolio`.
 - Une `Team` appartient à un `SAFeTrain`.
 - Les `Team`s sont composées de `Member`s.
+- Les `Member`s peuvent faire partie de `CommunityOfPractice`.
+- Les `Member`s ont des relations explicites entre eux (`pairedWith`, `mentors`, etc.).
 - Les `Team`s sont propriétaires d'`Artifact`s.
 - Les `Artifact`s peuvent avoir des dépendances entre eux.
 - Les `Member`s peuvent avoir un `manager` (qui est aussi un `#Member`).

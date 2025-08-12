@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from 'react';
 
-function Directory({ height }) {
+function Directory({ height, filters }) {
   const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    const buildQueryString = (filters) => {
+      const params = new URLSearchParams();
+      for (const [key, values] of Object.entries(filters)) {
+        if (values.length > 0) {
+          values.forEach(value => params.append(key, value));
+        }
+      }
+      return params.toString();
+    };
+
     const fetchData = async (retries = 5) => {
       try {
-        const response = await fetch('/api/directory_data');
+        const queryString = buildQueryString(filters);
+        const response = await fetch(`/api/directory_data?${queryString}`);
         if (!response.ok) {
           if (response.status === 503 && retries > 0) {
             console.warn('Backend not ready, retrying directory data fetch...');
@@ -28,7 +39,7 @@ function Directory({ height }) {
     };
 
     fetchData();
-  }, []);
+  }, [filters]);
 
   if (loading) {
     return <div>Loading directory...</div>;

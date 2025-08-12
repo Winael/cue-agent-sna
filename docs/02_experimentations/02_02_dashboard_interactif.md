@@ -49,6 +49,21 @@ En complément de la visualisation graphique, un onglet "Annuaire" a été ajout
     - **Chemin le plus court :** Un autre bouton permet de sélectionner un second membre et de visualiser le chemin le plus court entre eux dans le graphe.
     - **Analyse des voisins :** Une fonctionnalité permet de classer les voisins d'un membre par ordre de centralité, offrant un aperçu rapide des relations les plus importantes.
 
+### 3.5. Système de Filtrage Interactif
+- **Problématique :** Comment permettre aux utilisateurs de cibler des sous-ensembles spécifiques de l'organisation pour l'analyse ou la consultation ?
+- **Expérimentation :** Implémentation d'un système de filtrage dynamique basé sur les attributs des membres.
+- **Solution :**
+    - **Backend (`backend/main.py`) :**
+        - Ajout d'un endpoint `/api/filter_options` pour récupérer la liste des valeurs uniques pour chaque critère de filtrage (rôles, lieux, compétences, contrats, langues).
+        - Modification de l'endpoint `/api/directory_data` pour accepter des paramètres de filtrage, permettant de renvoyer uniquement les membres correspondant aux critères sélectionnés.
+    - **Frontend (`dashboard/src/`) :**
+        - Création d'un nouveau composant `Filter.js` pour gérer l'interface utilisateur des filtres.
+        - Intégration du composant `Filter` dans `App.js`, positionné au-dessus des vues du graphe et de l'annuaire.
+        - Utilisation de menus déroulants à sélections multiples (`react-select`) pour une expérience utilisateur intuitive.
+        - Mise à jour de `Directory.js` pour appeler l'API avec les filtres sélectionnés.
+        - Mise à jour de `Graph.js` pour masquer les nœuds qui ne correspondent pas aux critères de filtrage, permettant une visualisation ciblée sans altérer la structure sous-jacente du graphe.
+        - Ajustements CSS (`App.css`) pour assurer un affichage horizontal des filtres avec défilement si nécessaire.
+
 ## 4. Connaissances Acquises
 
 Ces travaux ont permis d'acquérir une connaissance approfondie des points suivants :

@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 import GraphComponent from './Graph';
 import Directory from './Directory';
+import Filter from './Filter';
 import './App.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('graph');
+  const [filters, setFilters] = useState({
+    roles: [],
+    locations: [],
+    skills: [],
+    contracts: [],
+    languages: [],
+  });
+
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
 
   return (
     <div className="App">
@@ -21,9 +33,14 @@ function App() {
           </button>
         </nav>
       </header>
-      <main>
-        {activeTab === 'graph' ? <GraphComponent height="100%" /> : <Directory height="100%" />}
-      </main>
+      <div className="filter-bar">
+        <Filter onFilterChange={handleFilterChange} />
+      </div>
+      <div className="main-container">
+        <main className="main-content">
+          {activeTab === 'graph' ? <GraphComponent height="100%" filters={filters} /> : <Directory height="100%" filters={filters} />}
+        </main>
+      </div>
     </div>
   );
 }

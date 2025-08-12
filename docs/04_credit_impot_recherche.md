@@ -18,6 +18,8 @@ Les activités suivantes, réalisées dans le cadre de ce projet, sont éligible
 *   **Développement d'algorithmes d'analyse de graphe :** L'implémentation et l'optimisation des méthodes d'analyse de réseau social (SNA) via NetworkX pour extraire des insights des modèles organisationnels.
 *   **Recherche et développement d'architectures d'agents IA :** La conception, l'expérimentation et l'optimisation des architectures d'agents basées sur LangGraph et les LLM pour la simulation et la proposition de changements organisationnels.
 *   **Développement d'interfaces de visualisation innovantes :** La création du dashboard interactif pour l'exploration du graphe, impliquant la résolution de verrous technologiques liés à l'intégration de bibliothèques de rendu complexes (Sigma.js) et à l'implémentation de fonctionnalités d'analyse avancées (vue de voisinage, calcul de chemin le plus court).
+*   **Développement d'un système de filtrage interactif :** Conception et implémentation d'une interface utilisateur avancée pour le filtrage dynamique des données organisationnelles (membres) basée sur de multiples critères, avec intégration backend/frontend et résolution des défis d'affichage (menus déroulants, performance).
+*   **Refonte et enrichissement du modèle de données organisationnel :** L'itération sur le modèle CUE pour y intégrer de nouveaux concepts (communautés de pratique, relations interpersonnelles typées) et un niveau de détail plus fin (attributs des membres). Cette activité de modélisation avancée est au cœur de la démarche de recherche du projet.
 *   **Veille technologique et bibliographique :** L'étude des dernières avancées en CUElang, SNA, LangGraph, LLM et leurs applications à la modélisation organisationnelle.
 
 ## Justification des Dépenses
