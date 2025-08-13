@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.2 - 2025-08-12
+
+### Added
+- **New SNA Queries:** Implemented new SNA queries for Agile and DevOps diagnostics:
+    - Knowledge Silo Detection (based on knowledge-sharing relationships).
+    - Dependency Bottleneck Identification (for artifacts/services).
+
+### Changed
+- **Graph Color Palette:** Updated graph node color palette for better readability and contrast.
+
 ## 0.3.1 - 2025-08-12
 
 ### Added

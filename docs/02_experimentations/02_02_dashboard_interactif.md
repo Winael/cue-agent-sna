@@ -64,6 +64,18 @@ En complément de la visualisation graphique, un onglet "Annuaire" a été ajout
         - Mise à jour de `Graph.js` pour masquer les nœuds qui ne correspondent pas aux critères de filtrage, permettant une visualisation ciblée sans altérer la structure sous-jacente du graphe.
         - Ajustements CSS (`App.css`) pour assurer un affichage horizontal des filtres avec défilement si nécessaire.
 
+### 3.6. Nouvelles Requêtes SNA pour le Diagnostic Agile/DevOps
+- **Problématique :** Comment fournir des insights plus spécifiques pour l'amélioration des pratiques Agile et DevOps au sein de l'organisation ?
+- **Expérimentation :** Développement de requêtes SNA ciblées basées sur des problématiques courantes en transformation Agile et DevOps.
+- **Solution :**
+    - **Backend (`src/analyze_graph.py`, `backend/main.py`) :**
+        - Implémentation de la fonction `get_knowledge_sharing_communities` pour détecter les silos de connaissance basés sur les relations explicites de partage de connaissance (mentorat, pair-programming, etc.).
+        - Ajout de l'endpoint `/api/sna/knowledge_silos` pour exposer cette analyse.
+        - Utilisation des endpoints existants de centralité (`degree_centrality`, `betweenness_centrality`) pour l'analyse de la communication et l'identification des goulots d'étranglement sur les artefacts.
+    - **Frontend (`dashboard/src/Graph.js`) :**
+        - Ajout de nouvelles options d'analyse dans le panneau SNA pour déclencher ces requêtes.
+        - Adaptation de l'affichage des résultats pour les communautés de connaissance (similaire à la détection de communautés existante).
+
 ## 4. Connaissances Acquises
 
 Ces travaux ont permis d'acquérir une connaissance approfondie des points suivants :
