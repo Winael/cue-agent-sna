@@ -30,6 +30,38 @@ def get_communities(G):
         communities[comm_id].append(node)
     return communities
 
+def get_knowledge_sharing_communities(G):
+    """
+    Detects communities based on knowledge-sharing relationships among members.
+    Knowledge-sharing relationships include pairedWith, mentors, askAdviceFrom, talksTo.
+    """
+    knowledge_graph = nx.Graph() # Undirected graph for community detection
+
+    # Add only Member nodes to the knowledge graph
+    for node_id, node_data in G.nodes(data=True):
+        if node_data.get("type") == "Member":
+            knowledge_graph.add_node(node_id, **node_data)
+
+    # Add knowledge-sharing edges
+    for u, v, data in G.edges(data=True):
+        relation = data.get("relation")
+        if relation in ["pairs_with", "mentors", "asks_advice_from", "talks_to"]:
+            # Ensure both nodes are members and exist in our knowledge_graph
+            if knowledge_graph.has_node(u) and knowledge_graph.has_node(v):
+                knowledge_graph.add_edge(u, v, **data) # Add edge with its attributes
+
+    # Only run community detection if there are edges in the knowledge graph
+    if knowledge_graph.number_of_edges() == 0:
+        return {} # No communities if no connections
+
+    partition = co.best_partition(knowledge_graph)
+    communities = {}
+    for node, comm_id in partition.items():
+        if comm_id not in communities:
+            communities[comm_id] = []
+        communities[comm_id].append(node)
+    return communities
+
 def analyze_graph(G):
     """Performs basic SNA on the graph and prints key metrics."""
     print("\n--- Graph Analysis ---")

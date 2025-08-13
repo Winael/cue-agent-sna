@@ -4,18 +4,18 @@ import Graph from 'graphology';
 
 const nodeTypeColors = {
   Member: '#FF5733',
-  service: '#33FF57',
-  application: '#33FF57',
-  library: '#FF33A1',
-  'Daily Scrum': '#A133FF',
-  'Scrum of Scrums': '#33FFA1',
-  'PI Planning': '#FFC300',
-  OKR: '#C70039',
-  Team: '#900C3F',
-  CommunityOfPractice: '#1ABC9C',
-  ValueChain: '#F1C40F',
-  Portfolio: '#E67E22',
-  SAFeTrain: '#E74C3C'
+  service: '#00BFFF',
+  application: '#32CD32',
+  library: '#FF1493',
+  'Daily Scrum': '#8A2BE2',
+  'Scrum of Scrums': '#00CED1',
+  'PI Planning': '#FFD700',
+  OKR: '#DC143C',
+  Team: '#4682B4',
+  CommunityOfPractice: '#20B2AA',
+  ValueChain: '#FF8C00',
+  Portfolio: '#8B008B',
+  SAFeTrain: '#B22222'
 };
 
 const snaMetricDescriptions = {
@@ -36,6 +36,18 @@ const snaMetricDescriptions = {
     tooltip: 'Détecte les groupes de membres fortement connectés.',
     description: 'Regroupe les membres qui sont plus densément connectés entre eux qu\'avec le reste du réseau.',
     nodeType: 'Member'
+  },
+  knowledge_silos: { // New entry
+    title: 'Détection de Silos de Connaissance',
+    tooltip: 'Identifie les groupes de membres qui partagent principalement des connaissances entre eux.',
+    description: 'Regroupe les membres qui sont plus densément connectés par des relations de partage de connaissances (mentorat, pair-programming, etc.) entre eux qu\'avec le reste du réseau.',
+    nodeType: 'Member' // This analysis is also member-centric
+  },
+  dependency_bottlenecks: {
+    title: 'Identification de Goulots d\'Étranglement (Artefacts)',
+    tooltip: 'Identifie les artefacts ou services critiques qui sont des points de passage obligés.',
+    description: 'Mesure l\'importance d\'un artefact comme intermédiaire dans les chaînes de dépendance. Un score élevé indique un goulot d\'étranglement.',
+    nodeType: 'Artifact'
   }
 };
 
@@ -185,7 +197,7 @@ const GraphComponent = ({ height, filters }) => {
       graph.clear();
 
       let nodeIdsInAnalysis;
-      if (metric === 'communities') {
+      if (metric === 'communities' || metric === 'knowledge_silos') {
         nodeIdsInAnalysis = new Set(Object.values(data).flat());
       } else {
         nodeIdsInAnalysis = new Set(Object.keys(data));
@@ -195,7 +207,7 @@ const GraphComponent = ({ height, filters }) => {
       const filteredEdges = originalGraphData.edges.filter(e => nodeIdsInAnalysis.has(e.source) && nodeIdsInAnalysis.has(e.target));
       loadGraph(graph, { nodes: filteredNodes, edges: filteredEdges });
 
-      if (metric === 'communities') {
+      if (metric === 'communities' || metric === 'knowledge_silos') {
         const communitySizes = Object.values(data).map(c => c.length);
         setSnaResults({
           ...snaMetricDescriptions[metric],

@@ -29,3 +29,17 @@ To validate the CUE model:
 ```bash
 cue eval cue/main.cue
 ```
+
+## Operational Guidelines
+
+### Frontend Development
+
+When making changes to the frontend (React application in `dashboard/`), it is crucial to rebuild the application to reflect these changes.
+
+To rebuild the frontend:
+
+```bash
+cd dashboard && npm install && npm run build
+```
+
+This step must be performed automatically after any frontend modification to ensure the latest changes are deployed.

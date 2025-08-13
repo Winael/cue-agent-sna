@@ -198,6 +198,12 @@ async def get_communities(node_type: Optional[str] = None):
     subgraph = get_subgraph_by_type(cached_graph, node_type)
     return JSONResponse(content=sna.get_communities(subgraph))
 
+@app.get("/api/sna/knowledge_silos")
+async def get_knowledge_silos():
+    if cached_graph is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet.")
+    return JSONResponse(content=sna.get_knowledge_sharing_communities(cached_graph))
+
 
 @app.get("/api/node_types")
 async def get_node_types():
