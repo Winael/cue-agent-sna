@@ -19,6 +19,7 @@ This document provides guidelines for Large Language Models (LLMs) like Gemini i
 3.  **Interact via Dashboard:** The primary interaction is now through the web dashboard, which calls the FastAPI backend for data and analysis.
     - **Filter System:** The dashboard now includes a comprehensive filter system, allowing users to dynamically filter members based on various attributes (roles, location, skills, contract, languages) in both the graph and directory views.
 4.  **Analyze with NetworkX:** The backend uses NetworkX to perform SNA calculations when requested by the frontend.
+    - **New SNA Queries:** Added specific SNA queries for Agile and DevOps diagnostics, including Knowledge Silo Detection and Dependency Bottleneck Identification.
 5.  **Simulate with LangGraph:** Use the AI agents to interact with the graph, propose changes, and simulate their impact.
 6.  **Feedback Loop:** The results of the simulation can be used to inform changes to the CUE models, closing the loop.
 
