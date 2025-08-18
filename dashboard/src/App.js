@@ -6,6 +6,7 @@ import './App.css';
 
 function App() {
   const [activeTab, setActiveTab] = useState('graph');
+  const [graphView, setGraphView] = useState('general'); // New state for graph view
   const [filters, setFilters] = useState({
     roles: [],
     locations: [],
@@ -33,12 +34,28 @@ function App() {
           </button>
         </nav>
       </header>
+      {activeTab === 'graph' && ( // Only show view selection for graph tab
+        <div className="graph-view-selector">
+          <button onClick={() => setGraphView('general')}
+                  className={graphView === 'general' ? 'active' : ''}>
+            General View
+          </button>
+          <button onClick={() => setGraphView('people')}
+                  className={graphView === 'people' ? 'active' : ''}>
+            People View
+          </button>
+          <button onClick={() => setGraphView('architectural')}
+                  className={graphView === 'architectural' ? 'active' : ''}>
+            Architectural View
+          </button>
+        </div>
+      )}
       <div className="filter-bar">
         <Filter onFilterChange={handleFilterChange} />
       </div>
       <div className="main-container">
         <main className="main-content">
-          {activeTab === 'graph' ? <GraphComponent height="100%" filters={filters} /> : <Directory height="100%" filters={filters} />}
+          {activeTab === 'graph' ? <GraphComponent height="100%" filters={filters} graphView={graphView} /> : <Directory height="100%" filters={filters} />}
         </main>
       </div>
     </div>

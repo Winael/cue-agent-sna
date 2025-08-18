@@ -49,42 +49,54 @@ def get_subgraph_by_type(graph, node_type: str):
     return graph.subgraph(nodes_of_type)
 
 @app.get("/api/graph_data")
-async def get_graph_data():
+async def get_graph_data(
+    node_types: Optional[List[str]] = Query(None),
+    edge_relations: Optional[List[str]] = Query(None)
+):
     global cached_graph, cached_pos
     if cached_graph is None or cached_pos is None:
         raise HTTPException(status_code=503, detail="Graph data not loaded yet. Please try again in a moment.")
 
     try:
-        nodes = []
-        edges = []
-
+        filtered_nodes = []
+        filtered_edges = []
+        
+        # Filter nodes
+        nodes_to_include = set()
         for node_id in cached_graph.nodes():
             node_data = cached_graph.nodes[node_id]
-            x, y = cached_pos[node_id]
-            nodes.append({
-                "id": node_id,
-                "label": node_id,
-                "x": float(x),
-                "y": float(y),
-                "size": 10, # Default size, can be adjusted
-                "color": node_data.get("color", "#999"), # Use color from node_data if available
-                "attributes": node_data # Include all node attributes
-            })
+            if node_types is None or node_data.get("type") in node_types:
+                nodes_to_include.add(node_id)
+                x, y = cached_pos[node_id]
+                filtered_nodes.append({
+                    "id": node_id,
+                    "label": node_id,
+                    "x": float(x),
+                    "y": float(y),
+                    "size": 10, # Default size, can be adjusted
+                    "color": node_data.get("color", "#999"), # Use color from node_data if available
+                    "attributes": node_data # Include all node attributes
+                })
 
+        # Filter edges and ensure both source and target nodes are included
         for i, (source, target, edge_data) in enumerate(cached_graph.edges(data=True)):
-            edges.append({
-                "id": f"e{i}",
-                "source": source,
-                "target": target,
-                "label": edge_data.get("relation", ""),
-                "type": "arrow", # For directed edges
-                "attributes": edge_data # Include all edge attributes
-            })
+            relation = edge_data.get("relation")
+            if (edge_relations is None or relation in edge_relations) and \
+               source in nodes_to_include and target in nodes_to_include:
+                filtered_edges.append({
+                    "id": f"e{i}",
+                    "source": source,
+                    "target": target,
+                    "label": relation,
+                    "type": "arrow", # For directed edges
+                    "attributes": edge_data # Include all edge attributes
+                })
 
-        graph_data = {"nodes": nodes, "edges": edges}
+        graph_data = {"nodes": filtered_nodes, "edges": filtered_edges}
         return JSONResponse(content=graph_data)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error loading graph data: {e}")
+
 
 @app.get("/api/directory_data")
 async def get_directory_data(
@@ -293,6 +305,14 @@ async def get_ranked_neighbors(node_id: str):
         reverse=True
     )
     return JSONResponse(content=dict(ranked_neighbors))
+
+
+
+@app.get("/api/sna/dependency_bottlenecks")
+async def get_dependency_bottlenecks():
+    if cached_graph is None:
+        raise HTTPException(status_code=503, detail="Graph data not loaded yet.")
+    return JSONResponse(content=sna.get_dependency_bottlenecks(cached_graph))
 
 
 # Mount the static files for the frontend

@@ -62,6 +62,36 @@ def get_knowledge_sharing_communities(G):
         communities[comm_id].append(node)
     return communities
 
+def get_dependency_bottlenecks(G):
+    """Identifies dependency bottlenecks by analyzing in-degree of artifacts."""
+    artifact_graph = nx.DiGraph() # Directed graph for dependency analysis
+
+    # Add only Artifact nodes to the dependency graph
+    for node_id, node_data in G.nodes(data=True):
+        node_type = node_data.get("type")
+        if node_type in ["application", "library", "service"]: # Check for actual artifact types
+            artifact_graph.add_node(node_id, **node_data)
+
+    # Add dependsOn edges
+    for u, v, data in G.edges(data=True):
+        relation = data.get("relation")
+        if relation == "depends_on": # Assuming 'depends_on' is the relation type for dependencies
+            if artifact_graph.has_node(u) and artifact_graph.has_node(v):
+                artifact_graph.add_edge(u, v, **data)
+
+    # Calculate in-degree centrality for artifacts
+    in_degree_centrality = artifact_graph.in_degree()
+
+    # Filter for artifacts that have incoming dependencies
+    bottlenecks = {
+        node: degree for node, degree in in_degree_centrality if degree > 0
+    }
+
+    # Sort by in-degree in descending order
+    sorted_bottlenecks = sorted(bottlenecks.items(), key=lambda item: item[1], reverse=True)
+
+    return dict(sorted_bottlenecks)
+
 def analyze_graph(G):
     """Performs basic SNA on the graph and prints key metrics."""
     print("\n--- Graph Analysis ---")

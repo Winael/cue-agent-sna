@@ -67,7 +67,10 @@ Représente un livrable technique (service, application, bibliothèque).
 
 - **Attributs :**
     - `name`: Nom de l'artefact (ex: "UserService").
+    - `description`: Description de l'artefact.
     - `type`: Type de l'artefact ("service", "application", "library").
+    - `owner`: Nom de l'équipe responsable de cet artefact.
+    - `hosted_on`: Liste des noms des composants d'infrastructure sur lesquels cet artefact est hébergé.
     - `dependsOn`: Liste des noms des artefacts dont cet artefact dépend.
 
 ## 7. Rituel (`#Ritual`)

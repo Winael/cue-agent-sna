@@ -71,7 +71,8 @@ En complément de la visualisation graphique, un onglet "Annuaire" a été ajout
     - **Backend (`src/analyze_graph.py`, `backend/main.py`) :**
         - Implémentation de la fonction `get_knowledge_sharing_communities` pour détecter les silos de connaissance basés sur les relations explicites de partage de connaissance (mentorat, pair-programming, etc.).
         - Ajout de l'endpoint `/api/sna/knowledge_silos` pour exposer cette analyse.
-        - Utilisation des endpoints existants de centralité (`degree_centrality`, `betweenness_centrality`) pour l'analyse de la communication et l'identification des goulots d'étranglement sur les artefacts.
+        - Implémentation de l'endpoint `/api/sna/dependency_bottlenecks` pour l'identification des goulots d'étranglement sur les dépendances d'artefacts.
+        - Utilisation des endpoints existants de centralité (`degree_centrality`, `betweenness_centrality`) pour l'analyse de la communication.
     - **Frontend (`dashboard/src/Graph.js`) :**
         - Ajout de nouvelles options d'analyse dans le panneau SNA pour déclencher ces requêtes.
         - Adaptation de l'affichage des résultats pour les communautés de connaissance (similaire à la détection de communautés existante).

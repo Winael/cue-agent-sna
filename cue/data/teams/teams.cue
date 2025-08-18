@@ -13,7 +13,7 @@ teams: [
                 valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: [] // Team Alpha owns these artifacts
+        artifactNames: ["artifact-alpha-web-app", "artifact-alpha-design-system", "artifact-alpha-e2e-tests"] // Team Alpha owns these artifacts
         okrNames: []
     },
     types.#Team & {
@@ -26,7 +26,7 @@ teams: [
                 valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: [] // Team Titan owns these artifacts
+        artifactNames: ["artifact-delta-core-api", "artifact-delta-auth-service", "artifact-delta-api-gateway"] // Team Delta owns these artifacts
         okrNames: []
     },
     types.#Team & {
@@ -39,7 +39,7 @@ teams: [
                 valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: [] // Team Titan owns these artifacts
+        artifactNames: ["artifact-gamma-poc-framework", "artifact-gamma-integration-toolkit", "artifact-gamma-data-explorer"] // Team Gamma owns these artifacts
         okrNames: []
     },
     types.#Team & {
@@ -52,7 +52,7 @@ teams: [
                 valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: [] // Team Titan owns these artifacts
+        artifactNames: ["artifact-omega-integration-platform", "artifact-omega-automated-tests-suite", "artifact-omega-deployment-scripts"] // Team Omega owns these artifacts
         okrNames: []
     },
     types.#Team & {
@@ -65,7 +65,7 @@ teams: [
                 valueChain: types.#ValueChain & {name: "Services Numériques"}
             }
         }
-        artifactNames: [] // Team Titan owns these artifacts
+        artifactNames: ["artifact-sigma-ci-cd-pipeline", "artifact-sigma-monitoring-stack", "artifact-sigma-security-scanner", "artifact-sigma-kubernetes-platform"] // Team Sigma owns these artifacts
         okrNames: []
     },
 ]
