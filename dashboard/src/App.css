@@ -30,7 +30,7 @@
 
 .filter-group h5 {
   margin: 0;
-  font-size: 0.9em;
+  font-size: 0.6em;
   color: #555;
   margin-right: 10px;
 }
@@ -46,41 +46,62 @@
 
 .App-header {
   background-color: #282c34;
-  min-height: 10vh;
+  min-height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: 1.5em;
   color: white;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
 }
 
 .App-header nav {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-.App-header button {
-  background-color: #61dafb;
-  border: none;
-  color: #282c34;
-  padding: 10px 20px;
-  margin: 0 10px;
-  border-radius: 5px;
+/* General button styling */
+.App button,
+.graph-view-selector button { /* Apply to all buttons in App and graph-view-selector */
+  background-color: #61dafb; /* A light blue */
+  border: 1px solid #61dafb; /* Subtle border */
+  color: #282c34; /* Dark text */
+  padding: 10px 15px; /* Slightly more padding */
+  margin: 0 5px; /* Reduced margin for closer buttons */
+  border-radius: 8px; /* More rounded corners */
   cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s ease;
+  font-size: 0.7em; /* Slightly smaller font */
+  font-weight: 600; /* Bolder font */
+  transition: all 0.3s ease; /* Smooth transitions for all properties */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
-.App-header button:hover {
-  background-color: #21a1f1;
+.App button:hover,
+.graph-view-selector button:hover {
+  background-color: #21a1f1; /* Darker blue on hover */
   color: white;
+  border-color: #21a1f1; /* Border matches background on hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* More pronounced shadow on hover */
+  transform: translateY(-1px); /* Slight lift effect */
 }
 
-.App-header button.active {
-  background-color: #21a1f1;
-  color: white;
-  border: 2px solid white;
+.App button.active,
+.graph-view-selector button.active {
+  background-color: #282c34; /* Dark background for active state */
+  color: #61dafb; /* Light blue text for active state */
+  border-color: #61dafb; /* Light blue border for active state */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* Inset shadow for active state */
+  transform: translateY(0); /* No lift for active state */
+}
+
+/* Specific styling for the graph view selector */
+.graph-view-selector {
+  display: flex;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Light shadow for the bar */
 }
 
 .directory-container {

@@ -52,6 +52,28 @@ const Filter = ({ onFilterChange }) => {
                         value={formatOptions(selectedFilters[filterType])}
                         placeholder={`Select ${filterType}...`}
                         menuPortalTarget={document.body} // Added this line
+                        styles={{
+                            menuList: (provided) => ({
+                                ...provided,
+                                fontSize: '0.5em',
+                            }),
+                            option: (provided) => ({
+                                ...provided,
+                                fontSize: '0.5em',
+                            }),
+                            control: (provided) => ({
+                                ...provided,
+                                fontSize: '0.5em',
+                            }),
+                            multiValueLabel: (provided) => ({
+                                ...provided,
+                                fontSize: '0.5em',
+                            }),
+                            input: (provided) => ({
+                                ...provided,
+                                fontSize: '0.5em',
+                            }),
+                        }}
                     />
                 </div>
             ))}

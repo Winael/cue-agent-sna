@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.4.0 - 2025-08-18
+
+### Added
+- **Enhanced Dashboard Views:**
+    - "People View" now includes organizational nodes (Team, SAFeTrain, Portfolio, ValueChain, CommunityOfPractice) in addition to members.
+    - "Architecture View" now displays only artifact nodes (service, application, library).
+
+### Changed
+- **UI/UX Improvements:**
+    - Adjusted the positioning of the legend block to prevent overlap with other UI elements.
+    - Reduced header height and adjusted various font sizes (h1, buttons, filter group, dropdown menus) for improved UI compactness and readability.
+- **Documentation Updates:**
+    - `docs/04_credit_impot_recherche.md` updated to reflect new R&D activities related to interactive views and detailed artifact modeling.
+    - `docs/02_experimentations/02_01_modele_organisationnel.md` updated to include detailed attributes for artifacts.
+    - `docs/02_experimentations/02_02_dashboard_interactif.md` updated to explicitly mention the new `get_dependency_bottlenecks` endpoint.
+
 ## 0.3.2 - 2025-08-12
 
 ### Added

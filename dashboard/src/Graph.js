@@ -51,7 +51,7 @@ const snaMetricDescriptions = {
   }
 };
 
-const GraphComponent = ({ height, filters }) => {
+const GraphComponent = ({ height, filters, graphView }) => {
   const containerRef = useRef(null);
   const sigmaInstanceRef = useRef(null);
   const [originalGraphData, setOriginalGraphData] = useState(null);
@@ -359,6 +359,32 @@ const GraphComponent = ({ height, filters }) => {
     if (!sigmaInstanceRef.current || !originalGraphData) return;
 
     const graph = sigmaInstanceRef.current.getGraph();
+    loadGraph(graph, originalGraphData); // Start with the full graph
+
+    let nodesToDisplay;
+    if (graphView === 'people') {
+        nodesToDisplay = new Set(originalGraphData.nodes.filter(n => ['Member', 'Team', 'SAFeTrain', 'Portfolio', 'ValueChain', 'CommunityOfPractice'].includes(n.attributes.type)).map(n => n.id));
+    } else if (graphView === 'architectural') {
+        nodesToDisplay = new Set(originalGraphData.nodes.filter(n => ['service', 'application', 'library'].includes(n.attributes.type)).map(n => n.id));
+    } else {
+        // General view, show all
+        sigmaInstanceRef.current.refresh();
+        return;
+    }
+
+    graph.forEachNode(node => {
+        if (!nodesToDisplay.has(node)) {
+            graph.dropNode(node);
+        }
+    });
+
+    sigmaInstanceRef.current.refresh();
+}, [graphView, originalGraphData]);
+
+  useEffect(() => {
+    if (!sigmaInstanceRef.current || !originalGraphData) return;
+
+    const graph = sigmaInstanceRef.current.getGraph();
     const isFilterActive = Object.values(filters).some(f => f.length > 0);
 
     if (!isFilterActive) {
@@ -413,7 +439,7 @@ const GraphComponent = ({ height, filters }) => {
         display: 'flex',
         flexDirection: 'column'
       }}>
-        <h4>SNA sur les Membres</h4>
+        <h4 style={{ fontSize: '0.8em' }}>SNA sur les Membres</h4>
         {Object.entries(snaMetricDescriptions).map(([metric, { title, tooltip, nodeType }]) => (
           <button key={metric} onClick={() => fetchAndApplySNA(metric, nodeType)} title={tooltip}>{title}</button>
         ))}
@@ -449,7 +475,7 @@ const GraphComponent = ({ height, filters }) => {
         border: '1px solid #ccc',
         borderRadius: '8px'
       }}>
-        <h2>Légende</h2>
+        <h2 style={{ fontSize: '0.6em' }}>Légende</h2>
         <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
           {Object.entries(nodeTypeColors).map(([type, color]) => (
             <li key={type} style={{ marginBottom: '5px' }}>

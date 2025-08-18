@@ -70,8 +70,11 @@ package types
 
 #Artifact: {
     name: string
+    description: string // Added description field
     type: "service" | "application" | "library"
-    dependsOn: [...string] // Names of other artifacts this one depends on
+    owner: string // Name of the team responsible for this artifact
+    hosted_on?: [...string] // Names of infrastructure components this artifact is hosted on
+    dependsOn?: [...string] // Names of other artifacts this one depends on
 }
 
 #Ritual: {
